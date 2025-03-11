@@ -1,35 +1,53 @@
+////
+////  Test1.swift
+////  DivanTests
+////
+////  Created by Sothesom on 21/12/1403.
+////
 //
-//  Test1.swift
-//  DivanTests
+//import XCTest
+//@testable import Divan
 //
-//  Created by Sothesom on 21/12/1403.
-//
-
-import XCTest
-
-final class Test1: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
-}
+//final class DivanModelTests: XCTestCase {
+//    var divanModel: DivanModel!
+//    
+//    override func setUp() {
+//        super.setUp()
+//        divanModel = DivanModel()
+//    }
+//    
+//    override func tearDown() {
+//        divanModel = nil
+//        super.tearDown()
+//    }
+//    
+//    // تست اتصال به دیتابیس
+//    func testDatabaseConnection() {
+//        XCTAssertTrue(divanModel.isDatabaseConnected(), "دیتابیس باید با موفقیت متصل شود")
+//    }
+//    
+//    // تست خواندن غزل‌ها
+//    func testReadGhazals() {
+//        let ghazals = divanModel.readData()
+//        XCTAssertFalse(ghazals.isEmpty, "لیست غزل‌ها نباید خالی باشد")
+//    }
+//    
+//    // تست جستجوی غزل‌ها
+//    func testSearchGhazals() {
+//        // جستجو با یک کلمه که احتمالاً در غزل‌ها وجود دارد
+//        let searchResults = divanModel.searchGhazals(containing: "دل")
+//        XCTAssertFalse(searchResults.isEmpty, "باید حداقل یک غزل با کلمه 'دل' پیدا شود")
+//        
+//        // جستجو با یک عبارت نامعتبر
+//        let emptyResults = divanModel.searchGhazals(containing: "xyz123")
+//        XCTAssertTrue(emptyResults.isEmpty, "جستجو با عبارت نامعتبر باید نتیجه خالی برگرداند")
+//    }
+//    
+//    // تست فرمت داده‌های برگشتی
+//    func testGhazalDataFormat() {
+//        let ghazals = divanModel.readData()
+//        for ghazal in ghazals {
+//            XCTAssertFalse(ghazal.isEmpty, "هیچ غزلی نباید خالی باشد")
+//        }
+//    }
+//}

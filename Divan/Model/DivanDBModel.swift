@@ -1,3 +1,10 @@
+//
+//  DivanDBModel.swift
+//  Divan
+//
+//  Created by Sothesom on 21/12/1403.
+//
+
 import Foundation
 import SQLite3
 

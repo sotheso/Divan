@@ -1,8 +1,15 @@
+//
+//  DivanViewModel.swift
+//  Divan
+//
+//  Created by Sothesom on 21/12/1403.
+//
+
 import Foundation
 import SwiftUI
 
 class DivanViewModel: ObservableObject {
-    private let model = DivanModel()
+    private let model = DivanDBModel()
     @Published var ghazals: [String] = []
     @Published var errorMessage: String?
     

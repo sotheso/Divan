@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		9B7ACEEE2D8069CA00C77C45 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9B0DA74A2D804FF900B8A15E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9B0DA7512D804FF900B8A15E;
+			remoteInfo = Divan;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		9B0DA7522D804FF900B8A15E /* Divan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Divan.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9B7ACEEA2D8069CA00C77C45 /* DivanTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DivanTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -16,10 +27,22 @@
 			path = Divan;
 			sourceTree = "<group>";
 		};
+		9B7ACEEB2D8069CA00C77C45 /* DivanTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DivanTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		9B0DA74F2D804FF900B8A15E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9B7ACEE72D8069CA00C77C45 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				9B0DA7542D804FF900B8A15E /* Divan */,
+				9B7ACEEB2D8069CA00C77C45 /* DivanTests */,
 				9B0DA7532D804FF900B8A15E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				9B0DA7522D804FF900B8A15E /* Divan.app */,
+				9B7ACEEA2D8069CA00C77C45 /* DivanTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -70,6 +95,29 @@
 			productReference = 9B0DA7522D804FF900B8A15E /* Divan.app */;
 			productType = "com.apple.product-type.application";
 		};
+		9B7ACEE92D8069CA00C77C45 /* DivanTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9B7ACEF22D8069CA00C77C45 /* Build configuration list for PBXNativeTarget "DivanTests" */;
+			buildPhases = (
+				9B7ACEE62D8069CA00C77C45 /* Sources */,
+				9B7ACEE72D8069CA00C77C45 /* Frameworks */,
+				9B7ACEE82D8069CA00C77C45 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9B7ACEEF2D8069CA00C77C45 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				9B7ACEEB2D8069CA00C77C45 /* DivanTests */,
+			);
+			name = DivanTests;
+			packageProductDependencies = (
+			);
+			productName = DivanTests;
+			productReference = 9B7ACEEA2D8069CA00C77C45 /* DivanTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -82,6 +130,10 @@
 				TargetAttributes = {
 					9B0DA7512D804FF900B8A15E = {
 						CreatedOnToolsVersion = 16.1;
+					};
+					9B7ACEE92D8069CA00C77C45 = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = 9B0DA7512D804FF900B8A15E;
 					};
 				};
 			};
@@ -100,12 +152,20 @@
 			projectRoot = "";
 			targets = (
 				9B0DA7512D804FF900B8A15E /* Divan */,
+				9B7ACEE92D8069CA00C77C45 /* DivanTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		9B0DA7502D804FF900B8A15E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9B7ACEE82D8069CA00C77C45 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +182,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9B7ACEE62D8069CA00C77C45 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9B7ACEEF2D8069CA00C77C45 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9B0DA7512D804FF900B8A15E /* Divan */;
+			targetProxy = 9B7ACEEE2D8069CA00C77C45 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		9B0DA75E2D804FFA00B8A15E /* Debug */ = {
@@ -300,6 +375,40 @@
 			};
 			name = Release;
 		};
+		9B7ACEF02D8069CA00C77C45 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sothesom.DivanTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Divan.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Divan";
+			};
+			name = Debug;
+		};
+		9B7ACEF12D8069CA00C77C45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sothesom.DivanTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Divan.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Divan";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -317,6 +426,15 @@
 			buildConfigurations = (
 				9B0DA7612D804FFA00B8A15E /* Debug */,
 				9B0DA7622D804FFA00B8A15E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9B7ACEF22D8069CA00C77C45 /* Build configuration list for PBXNativeTarget "DivanTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9B7ACEF02D8069CA00C77C45 /* Debug */,
+				9B7ACEF12D8069CA00C77C45 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
