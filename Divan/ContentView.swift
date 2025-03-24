@@ -9,8 +9,16 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            HafezQListView()
+        TabView {
+            SearchView()
+                .tabItem{
+                    Label("جستجو", systemImage: "sparkles")
+                }
+            
+            FalHafezView()
+                .tabItem{
+                    Label("فال", systemImage: "sparkles")
+                }
         }
     }
 }

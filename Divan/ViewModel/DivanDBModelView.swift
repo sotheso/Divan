@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class DivanViewModel: ObservableObject {
+class DivanDBModelView: ObservableObject {
     private let model = DivanDBModel()
     @Published var ghazals: [String] = []
     @Published var errorMessage: String?

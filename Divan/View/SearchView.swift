@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct HafezQListView: View {
+struct SearchView: View {
     
-    @StateObject private var viewModel = DivanViewModel()
+    @StateObject private var viewModel = DivanDBModelView()
     @State private var searchText = ""
     
     var filteredGhazals: [String] {
@@ -29,6 +29,8 @@ struct HafezQListView: View {
                         .foregroundColor(.gray)
                     TextField("جستجو در غزل‌ها...", text: $searchText)
                         .textFieldStyle(PlainTextFieldStyle())
+                        .multilineTextAlignment(.trailing) // راست چین کردن متن
+
                 }
                 .padding()
                 .background(
@@ -66,5 +68,5 @@ struct HafezQListView: View {
 }
 
 #Preview {
-    HafezQListView()
+    SearchView()
 }
