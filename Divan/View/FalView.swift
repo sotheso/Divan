@@ -54,7 +54,7 @@ struct FalHafezView: View {
                         }) {
                             HStack {
                                 Image(systemName: "arrow.counterclockwise")
-                                Text("فال جدید")
+                                Text("برگشت")
                             }
                             .font(.headline)
                             .foregroundColor(.white)
