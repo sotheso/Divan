@@ -25,16 +25,18 @@ struct FalHafezView: View {
                                 .multilineTextAlignment(.trailing)
                                 .font(.system(.body, design: .serif))
                             
-                            Text(ghazal.vazn)
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
+                            if let vazn = ghazal.vazn {
+                                Text(vazn)
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                            }
                         }
                         .padding()
                     }
                     
                     HStack(spacing: 12) {
                         // دکمه اشتراک‌گذاری
-                        ShareLink(item: "\(ghazal.title)\n\n\(ghazal.content)\n\nوزن: \(ghazal.vazn)") {
+                        ShareLink(item: "\(ghazal.title)\n\n\(ghazal.content)\n\nوزن: \(ghazal.vazn ?? "")") {
                             HStack {
                                 Image(systemName: "square.and.arrow.up")
                                 Text("اشتراک‌گذاری")
@@ -54,7 +56,7 @@ struct FalHafezView: View {
                         }) {
                             HStack {
                                 Image(systemName: "arrow.counterclockwise")
-                                Text("برگشت")
+                                Text("فال جدید")
                             }
                             .font(.headline)
                             .foregroundColor(.white)

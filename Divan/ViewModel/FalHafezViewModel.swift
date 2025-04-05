@@ -8,23 +8,17 @@
 import Foundation
 
 class FalHafezViewModel: ObservableObject {
+    private let model = HafezModel()
     @Published var selectedGhazal: HafezGhazal?
-    private var ghazals: [HafezGhazal] = []
+    @Published var ghazals: [HafezGhazal] = []
     
     init() {
         loadGhazals()
     }
     
-    private func loadGhazals() {
-        if let url = Bundle.main.url(forResource: "HafezQazal", withExtension: "json") {
-            do {
-                let data = try Data(contentsOf: url)
-                ghazals = try JSONDecoder().decode([HafezGhazal].self, from: data)
-                print("تعداد غزل‌های بارگذاری شده: \(ghazals.count)")
-            } catch {
-                print("خطا در خواندن فایل JSON: \(error)")
-            }
-        }
+    func loadGhazals() {
+        ghazals = model.readData()
+        print("تعداد غزل‌های حافظ لود شده: \(ghazals.count)")
     }
     
     func getRandomGhazal() {

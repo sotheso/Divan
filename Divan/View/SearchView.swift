@@ -8,60 +8,70 @@
 import SwiftUI
 
 struct SearchView: View {
-    
-    @StateObject private var viewModel = DivanDBModelView()
-    @State private var searchText = ""
-    
-    var filteredGhazals: [String] {
-        if searchText.isEmpty {
-            return viewModel.ghazals
-        } else {
-            return viewModel.ghazals.filter { $0.contains(searchText) }
-        }
-    }
+    @State private var searchText: String = ""
+    @State private var selectedPoet: String = ""
+    @StateObject private var viewModel = PoetGhazalViewModel()
     
     var body: some View {
         NavigationView {
             VStack {
-                // سرچ بار
+                // گزینه‌های فیلتر
                 HStack {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.gray)
-                    TextField("جستجو در غزل‌ها...", text: $searchText)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .multilineTextAlignment(.trailing) // راست چین کردن متن
-
+                    Button(action: {
+                        selectedPoet = "بابا طاهر"
+                        viewModel.loadGhazals(for: selectedPoet)
+                    }) {
+                        Text("بابا طاهر")
+                            .padding()
+                            .background(selectedPoet == "بابا طاهر" ? Color.blue : Color.gray)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                    
+                    Button(action: {
+                        selectedPoet = "حافظ"
+                        viewModel.loadGhazals(for: selectedPoet)
+                    }) {
+                        Text("حافظ")
+                            .padding()
+                            .background(selectedPoet == "حافظ" ? Color.blue : Color.gray)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
                 }
                 .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color(.systemGray6))
-                )
-                .padding(.horizontal)
                 
-                if let error = viewModel.errorMessage {
-                    Text(error)
-                        .foregroundColor(.red)
-                        .padding()
-                } else if viewModel.ghazals.isEmpty {
-                    Text("در حال بارگذاری...")
-                        .font(.system(.body, design: .serif))
-                } else {
-                    List {
-                        ForEach(filteredGhazals, id: \.self) { ghazal in
-                            Text(ghazal)
-                                .padding(.vertical, 8)
-                                .font(.system(.body, design: .serif))
+                // لیست غزل‌ها
+                List {
+                    ForEach(viewModel.filteredGhazals()) { ghazal in
+                        if searchText.isEmpty || 
+                           ghazal.title.contains(searchText) || 
+                           ghazal.content.contains(searchText) {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(height: 100)
+                                .foregroundStyle(.ultraThinMaterial)
+                                .overlay(
+                                    VStack(alignment: .leading) {
+                                        Text(ghazal.title)
+                                            .font(.headline)
+                                        Text(ghazal.content)
+                                            .font(.system(.body, design: .serif))
+                                    }
+                                    .padding()
+                                )
+                                .padding(.horizontal, 10)
                         }
                     }
-                    .listStyle(PlainListStyle())
                 }
+                .listStyle(PlainListStyle())
             }
-            .navigationTitle("دیوان حافظ")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationTitle("جستجو")
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .automatic))
             .onAppear {
-                // اطمینان از لود شدن مجدد داده‌ها
-                viewModel.loadGhazals()
+                viewModel.loadGhazals(for: selectedPoet)
+            }
+            .onChange(of: selectedPoet) { newValue in
+                viewModel.selectedPoet = newValue
             }
         }
     }
