@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 struct Poem: Identifiable {
     let id = UUID()
@@ -13,7 +14,44 @@ enum PoetType: String {
     case babaTaher = "باباطاهر"
 }
 
-class PoemModel {
+class PoemModel: ObservableObject {
+    @Published var searchText = ""
+    @Published var selectedPoet: PoetType = .hafez
+    @Published var searchResults: [Poem] = []
+    
+    private var allPoems: [Poem] = []
+    
+    init() {
+        loadPoems()
+    }
+    
+    private func loadPoems() {
+        switch selectedPoet {
+        case .hafez:
+            allPoems = readHafezData()
+        case .babaTaher:
+            allPoems = readBabaTaherData()
+        }
+        search()
+    }
+    
+    func search() {
+        if searchText.isEmpty {
+            searchResults = allPoems
+        } else {
+            searchResults = allPoems.filter { poem in
+                poem.title.contains(searchText) ||
+                poem.content.contains(searchText) ||
+                (poem.vazn?.contains(searchText) ?? false)
+            }
+        }
+    }
+    
+    func switchPoet() {
+        selectedPoet = selectedPoet == .hafez ? .babaTaher : .hafez
+        loadPoems()
+    }
+    
     func readHafezData() -> [Poem] {
         // خواندن داده‌های حافظ از JSON
         guard let url = Bundle.main.url(forResource: "HafezQazal", withExtension: "json"),

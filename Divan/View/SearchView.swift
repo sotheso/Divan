@@ -8,62 +8,145 @@
 import SwiftUI
 
 struct SearchView: View {
-    @StateObject private var viewModel = PoetGhazalViewModel()
+    @StateObject private var poemModel = PoemModel()
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        NavigationView {
-            VStack {
-                // نوار جستجو
-                HStack {
-                    TextField("جستجو...", text: $viewModel.searchText)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
-                        .onChange(of: viewModel.searchText) { _ in
-                            viewModel.search()
-                        }
-                }
-                
-                // دکمه تغییر شاعر
-                Button(action: {
-                    viewModel.switchPoet()
-                }) {
-                    HStack {
-                        Image(systemName: "arrow.triangle.2.circlepath")
-                        Text("تغییر به \(viewModel.selectedPoet == .hafez ? "باباطاهر" : "حافظ")")
-                    }
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(height: 50)
-                    .frame(maxWidth: .infinity)
-                    .background(Color.orange)
-                    .cornerRadius(10)
-                }
+        VStack(spacing: 0) {
+            // نوار جستجو
+            searchBar
+                .padding()
+            
+            // دکمه تغییر شاعر
+            poetSwitchButton
                 .padding(.horizontal)
-                
-                // نتایج جستجو
-                List(viewModel.searchResults) { poem in
-                    VStack(alignment: .trailing, spacing: 8) {
-                        Text(poem.title)
-                            .font(.headline)
-                        
-                        Text(poem.content)
-                            .font(.body)
-                            .lineLimit(3)
-                        
-                        if let vazn = poem.vazn {
-                            Text(vazn)
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }
-                    }
-                    .padding(.vertical, 8)
+                .padding(.bottom)
+            
+            // نتایج جستجو
+            if poemModel.searchResults.isEmpty {
+                emptyStateView
+            } else {
+                searchResultsList
+            }
+        }
+        .navigationTitle("جستجو در اشعار")
+    }
+    
+    private var searchBar: some View {
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .foregroundStyle(.secondary)
+            
+            TextField("جستجو در اشعار...", text: $poemModel.searchText)
+                .textFieldStyle(.plain)
+                .submitLabel(.search)
+                .onChange(of: poemModel.searchText) { _ in
+                    poemModel.search()
+                }
+            
+            if !poemModel.searchText.isEmpty {
+                Button(action: {
+                    poemModel.searchText = ""
+                    poemModel.search()
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.secondary)
                 }
             }
-            .navigationTitle("جستجو در \(viewModel.selectedPoet.rawValue)")
         }
+        .padding()
+        .background(.background)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.secondary.opacity(0.2), lineWidth: 1)
+        )
+        .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
+    }
+    
+    private var poetSwitchButton: some View {
+        Button(action: { poemModel.switchPoet() }) {
+            HStack {
+                Image(systemName: "arrow.triangle.2.circlepath")
+                    .imageScale(.medium)
+                Text("تغییر به \(poemModel.selectedPoet == .hafez ? "باباطاهر" : "حافظ")")
+                    .fontWeight(.medium)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 44)
+            .foregroundStyle(.white)
+            .background(Color.accentColor.gradient)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+        }
+        .buttonStyle(.plain)
+    }
+    
+    private var searchResultsList: some View {
+        ScrollView {
+            LazyVStack(spacing: 16) {
+                ForEach(poemModel.searchResults) { poem in
+                    poemCard(poem)
+                }
+            }
+            .padding()
+        }
+        .background(Color(white: 0.95))
+    }
+    
+    private func poemCard(_ poem: Poem) -> some View {
+        VStack(alignment: .trailing, spacing: 12) {
+            Text(poem.title)
+                .font(.headline)
+                .foregroundStyle(.primary)
+            
+            Text(poem.content)
+                .font(.body)
+                .lineLimit(3)
+                .foregroundStyle(.secondary)
+            
+            if let vazn = poem.vazn {
+                HStack {
+                    Text(vazn)
+                        .font(.footnote)
+                        .foregroundStyle(.tertiary)
+                    
+                    Spacer()
+                    
+                    Image(systemName: "music.note")
+                        .imageScale(.small)
+                        .foregroundStyle(.tertiary)
+                }
+            }
+        }
+        .padding()
+        .background(.background)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 2)
+    }
+    
+    private var emptyStateView: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "text.magnifyingglass")
+                .font(.system(size: 48))
+                .foregroundStyle(.secondary)
+            
+            Text("جستجو در اشعار \(poemModel.selectedPoet.rawValue)")
+                .font(.headline)
+                .foregroundStyle(.secondary)
+            
+            Text("برای یافتن اشعار مورد نظر خود، متنی را در کادر بالا وارد کنید")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(white: 0.95))
     }
 }
 
 #Preview {
-    SearchView()
+    NavigationStack {
+        SearchView()
+    }
 }

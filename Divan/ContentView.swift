@@ -12,123 +12,106 @@ struct HomeView: View {
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
+            VStack(spacing: 16) {
                 // Logo and Title Section
-                HStack(spacing: 10) {
+                HStack(spacing: 12) {
                     Image(systemName: "book.circle.fill")
                         .resizable()
-                        .frame(width: 36, height: 36)
-                        .foregroundColor(.purple)
+                        .frame(width: 40, height: 40)
+                        .foregroundStyle(.tint)
                     
                     Spacer()
                     
                     Text("گنجینه‌ای از اشعار شاعران پارسی")
-                        .dynamicFont(baseSize: 14)
-                        .foregroundColor(.gray)
+                        .font(.headline)
+                        .foregroundStyle(.secondary)
                 }
-                .padding(.vertical, 10)
+                .padding(.vertical, 12)
                 
-                // Hafez Banner
-                NavigationLink(destination: PoemD()) {
-                    PoetBannerView(
-                        title: "حافظ",
-                        imageName: "Hafez",
-                        color: .red
-                    )
+                // Poets Grid
+                LazyVGrid(columns: [
+                    GridItem(.flexible()),
+                    GridItem(.flexible())
+                ], spacing: 16) {
+                    NavigationLink(destination: PoemD()) {
+                        PoetCardView(
+                            title: "حافظ",
+                            subtitle: "غزلیات",
+                            imageName: "Hafez",
+                            color: .red
+                        )
+                    }
+                    
+                    NavigationLink(destination: PoemD()) {
+                        PoetCardView(
+                            title: "سعدی",
+                            subtitle: "بوستان و گلستان",
+                            imageName: "Saadi",
+                            color: .green
+                        )
+                    }
+                    
+                    NavigationLink(destination: PoemD()) {
+                        PoetCardView(
+                            title: "باباطاهر",
+                            subtitle: "دوبیتی‌ها",
+                            imageName: "BabaTaher",
+                            color: .blue
+                        )
+                    }
+                    
+                    NavigationLink(destination: PoemD()) {
+                        PoetCardView(
+                            title: "مولانا",
+                            subtitle: "مثنوی معنوی",
+                            imageName: "Molana",
+                            color: .purple
+                        )
+                    }
                 }
-                
-                .padding()
-                
-                // Saadi Banner
-                NavigationLink(destination: PoemD()) {
-                    PoetBannerView(
-                        title: "سعدی",
-                        imageName: "Saadi",
-                        color: .green
-                    )
-                }
-                .padding()
-                
-                // Baba Taher Banner
-                NavigationLink(destination: PoemD()) {
-                    PoetBannerView(
-                        title: "باباطاهر",
-                        imageName: "BabaTaher",
-                        color: .blue
-                    )
-                }
-                .padding()
-                
-                // Molana Banner
-                NavigationLink(destination: PoemD()) {
-                    PoetBannerView(
-                        title: "مولانا",
-                        imageName: "Molana",
-                        color: .purple
-                    )
-                }
-                .padding()
-                
             }
             .padding()
         }
-        .navigationTitle("خانه")
+        .navigationTitle("دیوان شعر پارسی")
+        .navigationBarTitleDisplayMode(.large)
     }
 }
 
-struct PoetBannerView: View {
+struct PoetCardView: View {
     let title: String
+    let subtitle: String
     let imageName: String
     let color: Color
     
     var body: some View {
-        ZStack {
-            // Background
-            RoundedRectangle(cornerRadius: 20)
-                .fill(color.opacity(0.1))
-                .frame(height: 100)
+        VStack(alignment: .trailing) {
+            Image(imageName)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(height: 120)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 20)
+                    RoundedRectangle(cornerRadius: 16)
                         .stroke(color.opacity(0.3), lineWidth: 1)
                 )
             
-            HStack(spacing: 15) {
-                // Arrow Icon
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundColor(color)
-                    .padding(.trailing, 10)
+            VStack(alignment: .trailing, spacing: 4) {
+                Text(title)
+                    .font(.headline)
+                    .foregroundStyle(.primary)
                 
-                Spacer()
-                Spacer()
-                Spacer()
-
-                
-                VStack(alignment: .trailing, spacing: 5) {
-                    Text(title)
-                        .font(.system(size: 18, weight: .bold))
-                        .foregroundColor(.primary)
-                    
-                    Text("اشعار و غزلیات")
-                        .font(.system(size: 14))
-                        .foregroundColor(.gray)
-                }
-                Spacer()
-                
-                // Poet Image
-                Image(imageName)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 70, height: 70)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(color.opacity(0.5), lineWidth: 1)
-                    )
-                            
+                Text(subtitle)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
             }
-            .padding(.horizontal, 15)
+            .padding(.vertical, 8)
         }
+        .frame(maxWidth: .infinity)
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .fill(.background)
+                .shadow(radius: 2, x: 0, y: 2)
+        )
     }
 }
 
@@ -136,7 +119,7 @@ struct ContentView: View {
     @StateObject private var settings = AppSettings()
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             TabView {
                 HomeView()
                     .tabItem {
@@ -150,17 +133,18 @@ struct ContentView: View {
                 
                 FalHafezView()
                     .tabItem {
-                        Label("فال", systemImage: "sparkles")
+                        Label("فال", systemImage: "sparkles.square.filled.on.square")
                     }
                     
                 SettingView()
                     .tabItem {
-                        Label("تنظیمات", systemImage: "gear")
+                        Label("تنظیمات", systemImage: "gearshape.fill")
                     }
             }
         }
         .environmentObject(settings)
         .preferredColorScheme(settings.isDarkMode ? .dark : .light)
+        .tint(Color.purple)
     }
 }
 
