@@ -8,71 +8,58 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State private var searchText: String = ""
-    @State private var selectedPoet: String = ""
     @StateObject private var viewModel = PoetGhazalViewModel()
     
     var body: some View {
         NavigationView {
             VStack {
-                // گزینه‌های فیلتر
+                // نوار جستجو
                 HStack {
-                    Button(action: {
-                        selectedPoet = "بابا طاهر"
-                        viewModel.loadGhazals(for: selectedPoet)
-                    }) {
-                        Text("بابا طاهر")
-                            .padding()
-                            .background(selectedPoet == "بابا طاهر" ? Color.blue : Color.gray)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
-                    
-                    Button(action: {
-                        selectedPoet = "حافظ"
-                        viewModel.loadGhazals(for: selectedPoet)
-                    }) {
-                        Text("حافظ")
-                            .padding()
-                            .background(selectedPoet == "حافظ" ? Color.blue : Color.gray)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
+                    TextField("جستجو...", text: $viewModel.searchText)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                        .onChange(of: viewModel.searchText) { _ in
+                            viewModel.search()
+                        }
                 }
-                .padding()
                 
-                // لیست غزل‌ها
-                List {
-                    ForEach(viewModel.filteredGhazals()) { ghazal in
-                        if searchText.isEmpty || 
-                           ghazal.title.contains(searchText) || 
-                           ghazal.content.contains(searchText) {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(height: 100)
-                                .foregroundStyle(.ultraThinMaterial)
-                                .overlay(
-                                    VStack(alignment: .leading) {
-                                        Text(ghazal.title)
-                                            .font(.headline)
-                                        Text(ghazal.content)
-                                            .font(.system(.body, design: .serif))
-                                    }
-                                    .padding()
-                                )
-                                .padding(.horizontal, 10)
+                // دکمه تغییر شاعر
+                Button(action: {
+                    viewModel.switchPoet()
+                }) {
+                    HStack {
+                        Image(systemName: "arrow.triangle.2.circlepath")
+                        Text("تغییر به \(viewModel.selectedPoet == .hafez ? "باباطاهر" : "حافظ")")
+                    }
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(height: 50)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.orange)
+                    .cornerRadius(10)
+                }
+                .padding(.horizontal)
+                
+                // نتایج جستجو
+                List(viewModel.searchResults) { poem in
+                    VStack(alignment: .trailing, spacing: 8) {
+                        Text(poem.title)
+                            .font(.headline)
+                        
+                        Text(poem.content)
+                            .font(.body)
+                            .lineLimit(3)
+                        
+                        if let vazn = poem.vazn {
+                            Text(vazn)
+                                .font(.caption)
+                                .foregroundColor(.gray)
                         }
                     }
+                    .padding(.vertical, 8)
                 }
-                .listStyle(PlainListStyle())
             }
-            .navigationTitle("جستجو")
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .automatic))
-            .onAppear {
-                viewModel.loadGhazals(for: selectedPoet)
-            }
-            .onChange(of: selectedPoet) { newValue in
-                viewModel.selectedPoet = newValue
-            }
+            .navigationTitle("جستجو در \(viewModel.selectedPoet.rawValue)")
         }
     }
 }

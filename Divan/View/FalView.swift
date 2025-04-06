@@ -14,18 +14,35 @@ struct FalHafezView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
-                if let ghazal = viewModel.selectedGhazal {
+                // دکمه تغییر شاعر
+                Button(action: {
+                    viewModel.switchPoet()
+                }) {
+                    HStack {
+                        Image(systemName: "arrow.triangle.2.circlepath")
+                        Text("تغییر به \(viewModel.selectedPoet == .hafez ? "باباطاهر" : "حافظ")")
+                    }
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(height: 50)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.orange)
+                    .cornerRadius(10)
+                }
+                .padding(.horizontal)
+                
+                if let poem = viewModel.selectedPoem {
                     ScrollView {
                         VStack(alignment: .trailing, spacing: 16) {
-                            Text(ghazal.title)
+                            Text(poem.title)
                                 .font(.headline)
                                 .multilineTextAlignment(.trailing)
                             
-                            Text(ghazal.content)
+                            Text(poem.content)
                                 .multilineTextAlignment(.trailing)
                                 .font(.system(.body, design: .serif))
                             
-                            if let vazn = ghazal.vazn {
+                            if let vazn = poem.vazn {
                                 Text(vazn)
                                     .font(.subheadline)
                                     .foregroundColor(.gray)
@@ -36,7 +53,7 @@ struct FalHafezView: View {
                     
                     HStack(spacing: 12) {
                         // دکمه اشتراک‌گذاری
-                        ShareLink(item: "\(ghazal.title)\n\n\(ghazal.content)\n\nوزن: \(ghazal.vazn ?? "")") {
+                        ShareLink(item: "\(poem.title)\n\n\(poem.content)\n\nوزن: \(poem.vazn ?? "")") {
                             HStack {
                                 Image(systemName: "square.and.arrow.up")
                                 Text("اشتراک‌گذاری")
@@ -51,7 +68,7 @@ struct FalHafezView: View {
                         
                         // دکمه فال جدید
                         Button(action: {
-                            viewModel.selectedGhazal = nil
+                            viewModel.selectedPoem = nil
                             hasTakenFal = false
                         }) {
                             HStack {
@@ -80,12 +97,12 @@ struct FalHafezView: View {
                         .foregroundColor(.gray)
                     
                     Button(action: {
-                        viewModel.getRandomGhazal()
+                        viewModel.getRandomPoem()
                         hasTakenFal = true
                     }) {
                         HStack {
                             Image(systemName: "sparkles")
-                            Text("فال حافظ")
+                            Text("فال \(viewModel.selectedPoet.rawValue)")
                         }
                         .font(.headline)
                         .foregroundColor(.white)
@@ -97,7 +114,7 @@ struct FalHafezView: View {
                     .padding(.horizontal)
                 }
             }
-            .navigationTitle("فال حافظ")
+            .navigationTitle("فال \(viewModel.selectedPoet.rawValue)")
         }
     }
 }

@@ -1,29 +1,31 @@
-//
-//  FalHafezViewModel.swift
-//  Divan
-//
-//  Created by Sothesom on 04/01/1404.
-//
-
 import Foundation
 
 class FalHafezViewModel: ObservableObject {
-    private let model = HafezModel()
-    @Published var selectedGhazal: HafezGhazal?
-    @Published var ghazals: [HafezGhazal] = []
+    private let model = PoemModel()
+    @Published var selectedPoem: Poem?
+    @Published var hafezPoems: [Poem] = []
+    @Published var babaTaherPoems: [Poem] = []
+    @Published var selectedPoet: PoetType = .hafez
     
     init() {
-        loadGhazals()
+        loadPoems()
     }
     
-    func loadGhazals() {
-        ghazals = model.readData()
-        print("تعداد غزل‌های حافظ لود شده: \(ghazals.count)")
+    func loadPoems() {
+        hafezPoems = model.readHafezData()
+        babaTaherPoems = model.readBabaTaherData()
+        print("تعداد غزل‌های حافظ: \(hafezPoems.count)")
+        print("تعداد غزل‌های باباطاهر: \(babaTaherPoems.count)")
     }
     
-    func getRandomGhazal() {
-        guard !ghazals.isEmpty else { return }
-        selectedGhazal = ghazals.randomElement()
+    func getRandomPoem() {
+        let poems = selectedPoet == .hafez ? hafezPoems : babaTaherPoems
+        guard !poems.isEmpty else { return }
+        selectedPoem = poems.randomElement()
     }
-}
-
+    
+    func switchPoet() {
+        selectedPoet = selectedPoet == .hafez ? .babaTaher : .hafez
+        selectedPoem = nil
+    }
+} 
