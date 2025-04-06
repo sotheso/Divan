@@ -10,108 +10,115 @@ import SwiftUI
 struct FalHafezView: View {
     @StateObject private var viewModel = FalHafezViewModel()
     @State private var hasTakenFal = false
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                // دکمه تغییر شاعر
-                Button(action: {
-                    viewModel.switchPoet()
-                }) {
-                    HStack {
-                        Image(systemName: "arrow.triangle.2.circlepath")
-                        Text("تغییر به \(viewModel.selectedPoet == .hafez ? "باباطاهر" : "حافظ")")
-                    }
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(height: 50)
-                    .frame(maxWidth: .infinity)
-                    .background(Color.orange)
-                    .cornerRadius(10)
-                }
-                .padding(.horizontal)
+        NavigationStack {
+            ZStack {
+                // پس‌زمینه گرادیانت
+                LinearGradient(
+                    colors: [
+                        Color(.systemBackground),
+                        Color(.secondarySystemBackground)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea()
                 
-                if let poem = viewModel.selectedPoem {
-                    ScrollView {
-                        VStack(alignment: .trailing, spacing: 16) {
-                            Text(poem.title)
-                                .font(.headline)
-                                .multilineTextAlignment(.trailing)
-                            
-                            Text(poem.content)
-                                .multilineTextAlignment(.trailing)
-                                .font(.system(.body, design: .serif))
-                            
-                            if let vazn = poem.vazn {
-                                Text(vazn)
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
+                ScrollView {
+                    VStack(spacing: 24) {
+                        // کارت اصلی
+                        if let poem = viewModel.selectedPoem {
+                            VStack(spacing: 20) {
+                                Text(poem.title)
+                                    .font(.system(.title2, design: .serif))
+                                    .fontWeight(.bold)
+                                    .multilineTextAlignment(.center)
+                                    .padding(.top)
+                                
+                                Text(poem.content)
+                                    .font(.system(.body, design: .serif))
+                                    .multilineTextAlignment(.center)
+                                    .lineSpacing(8)
+                                
+                                if let vazn = poem.vazn {
+                                    Text(vazn)
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                }
+                                
+                                // دکمه‌های عملیات
+                                HStack(spacing: 16) {
+                                    ShareLink(item: "\(poem.title)\n\n\(poem.content)\n\nوزن: \(poem.vazn ?? "")") {
+                                        Label("اشتراک‌گذاری", systemImage: "square.and.arrow.up")
+                                    }
+                                    .buttonStyle(.bordered)
+                                    .tint(.blue)
+                                    
+                                    Button(action: {
+                                        withAnimation {
+                                            viewModel.selectedPoem = nil
+                                            hasTakenFal = false
+                                        }
+                                    }) {
+                                        Label("فال جدید", systemImage: "arrow.counterclockwise")
+                                    }
+                                    .buttonStyle(.bordered)
+                                    .tint(.blue)
+                                }
                             }
-                        }
-                        .padding()
-                    }
-                    
-                    HStack(spacing: 12) {
-                        // دکمه اشتراک‌گذاری
-                        ShareLink(item: "\(poem.title)\n\n\(poem.content)\n\nوزن: \(poem.vazn ?? "")") {
-                            HStack {
-                                Image(systemName: "square.and.arrow.up")
-                                Text("اشتراک‌گذاری")
+                            .padding(24)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(Color(.systemBackground))
+                                    .shadow(radius: 8, x: 0, y: 4)
+                            )
+                            .padding(.horizontal)
+                        } else {
+                            // حالت خالی
+                            VStack(spacing: 24) {
+                                Image(systemName: "book.circle.fill")
+                                    .resizable()
+                                    .frame(width: 80, height: 80)
+                                    .foregroundStyle(.blue)
+                                
+                                Text("برای گرفتن فال، نیت کنید و دکمه فال را لمس کنید")
+                                    .font(.headline)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundStyle(.secondary)
+                                
+                                
+                                Spacer()
+                                Spacer()
+
+                                HStack{
+                                    Button(action: {
+                                        withAnimation {
+                                            viewModel.getRandomPoem()
+                                            hasTakenFal = true
+                                        }
+                                    }) {
+                                        Label("فال \(viewModel.selectedPoet.rawValue)", systemImage: "sparkles")
+                                            .frame(maxWidth: .infinity)
+                                    }
+                                    .buttonStyle(.borderedProminent)
+                                    .controlSize(.large)
+                                    
+                                    Button(action: { viewModel.switchPoet() }) {
+                                        Label("تغییر شاعر",
+                                              systemImage: "arrow.triangle.2.circlepath")
+                                        .frame(maxWidth: .infinity)
+                                    }
+                                    .buttonStyle(.bordered)
+                                    .controlSize(.large)
+                                }
                             }
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(height: 50)
-                            .frame(maxWidth: .infinity)
-                            .background(Color.green)
-                            .cornerRadius(10)
-                        }
-                        
-                        // دکمه فال جدید
-                        Button(action: {
-                            viewModel.selectedPoem = nil
-                            hasTakenFal = false
-                        }) {
-                            HStack {
-                                Image(systemName: "arrow.counterclockwise")
-                                Text("فال جدید")
-                            }
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(height: 50)
-                            .frame(maxWidth: .infinity)
-                            .background(Color.blue)
-                            .cornerRadius(10)
+                            .padding(.top, 200)
+                            .padding(.horizontal, 20)
                         }
                     }
-                    .padding(.horizontal)
-                    
-                } else {
-                    Image(systemName: "book.circle.fill")
-                        .resizable()
-                        .frame(width: 100, height: 100)
-                        .foregroundColor(.gray)
-                        .padding()
-                    
-                    Text("برای گرفتن فال، دکمه زیر را لمس کنید")
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.gray)
-                    
-                    Button(action: {
-                        viewModel.getRandomPoem()
-                        hasTakenFal = true
-                    }) {
-                        HStack {
-                            Image(systemName: "sparkles")
-                            Text("فال \(viewModel.selectedPoet.rawValue)")
-                        }
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(height: 50)
-                        .frame(maxWidth: .infinity)
-                        .background(Color.blue)
-                        .cornerRadius(10)
-                    }
-                    .padding(.horizontal)
+                    .padding(.vertical)
                 }
             }
             .navigationTitle("فال \(viewModel.selectedPoet.rawValue)")

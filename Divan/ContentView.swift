@@ -32,15 +32,17 @@ struct HomeView: View {
                 LazyVGrid(columns: [
                     GridItem(.flexible()),
                     GridItem(.flexible())
-                ], spacing: 16) {
+                ], spacing: 26) {
                     NavigationLink(destination: PoemD()) {
                         PoetCardView(
                             title: "حافظ",
                             subtitle: "غزلیات",
                             imageName: "Hafez",
                             color: .red
+
                         )
                     }
+                    
                     
                     NavigationLink(destination: PoemD()) {
                         PoetCardView(
@@ -105,6 +107,8 @@ struct PoetCardView: View {
                     .foregroundStyle(.secondary)
             }
             .padding(.vertical, 8)
+            .padding(.horizontal)
+            
         }
         .frame(maxWidth: .infinity)
         .background(
@@ -120,26 +124,33 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            TabView {
-                HomeView()
-                    .tabItem {
-                        Label("خانه", systemImage: "house.fill")
-                    }
-                
-                SearchView()
-                    .tabItem {
-                        Label("جستجو", systemImage: "magnifyingglass")
-                    }
-                
-                FalHafezView()
-                    .tabItem {
-                        Label("فال", systemImage: "sparkles.square.filled.on.square")
-                    }
+            ZStack {
+                TabView {
+                    HomeView()
+                        .tabItem {
+                            Label("خانه", systemImage: "house.fill")
+                        }
                     
-                SettingView()
-                    .tabItem {
-                        Label("تنظیمات", systemImage: "gearshape.fill")
-                    }
+                    SearchView()
+                        .tabItem {
+                            Label("جستجو", systemImage: "magnifyingglass")
+                        }
+                    
+                    FalHafezView()
+                        .tabItem {
+                            Label("فال", systemImage: "sparkles.square.filled.on.square")
+                        }
+                        
+                    SettingView()
+                        .tabItem {
+                            Label("تنظیمات", systemImage: "gearshape.fill")
+                        }
+                }
+                .background(
+                    Color.clear
+                        .background(.ultraThinMaterial)
+                        .edgesIgnoringSafeArea(.bottom)
+                )
             }
         }
         .environmentObject(settings)
