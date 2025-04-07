@@ -86,6 +86,16 @@ struct SearchView: View {
             LazyVStack(spacing: 16) {
                 ForEach(poemModel.searchResults) { poem in
                     poemCard(poem)
+                        .onAppear {
+                            if poem.id == poemModel.searchResults.last?.id {
+                                poemModel.loadMoreContent()
+                            }
+                        }
+                }
+                
+                if poemModel.isLoading {
+                    ProgressView()
+                        .frame(height: 50)
                 }
             }
             .padding()
@@ -94,30 +104,22 @@ struct SearchView: View {
     }
     
     private func poemCard(_ poem: Poem) -> some View {
-        VStack(alignment: .trailing, spacing: 12) {
+        VStack(alignment: .center, spacing: 12) {
             Text(poem.title)
                 .font(.headline)
                 .foregroundStyle(.primary)
+                .lineLimit(1)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
             
             Text(poem.content)
                 .font(.body)
                 .lineLimit(3)
                 .foregroundStyle(.secondary)
-            
-            if let vazn = poem.vazn {
-                HStack {
-                    Text(vazn)
-                        .font(.footnote)
-                        .foregroundStyle(.tertiary)
-                    
-                    Spacer()
-                    
-                    Image(systemName: "music.note")
-                        .imageScale(.small)
-                        .foregroundStyle(.tertiary)
-                }
-            }
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
         }
+        .frame(height: 120)
         .padding()
         .background(.background)
         .clipShape(RoundedRectangle(cornerRadius: 16))

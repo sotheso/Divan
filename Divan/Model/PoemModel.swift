@@ -18,8 +18,11 @@ class PoemModel: ObservableObject {
     @Published var searchText = ""
     @Published var selectedPoet: PoetType = .hafez
     @Published var searchResults: [Poem] = []
+    @Published var isLoading = false
+    @Published var currentPage = 1
     
     private var allPoems: [Poem] = []
+    private let itemsPerPage = 10
     
     init() {
         loadPoems()
@@ -36,14 +39,47 @@ class PoemModel: ObservableObject {
     }
     
     func search() {
-        if searchText.isEmpty {
-            searchResults = allPoems
+        let filteredPoems = if searchText.isEmpty {
+            allPoems
         } else {
-            searchResults = allPoems.filter { poem in
+            allPoems.filter { poem in
                 poem.title.contains(searchText) ||
                 poem.content.contains(searchText) ||
                 (poem.vazn?.contains(searchText) ?? false)
             }
+        }
+        
+        // نمایش 10 آیتم اول
+        searchResults = Array(filteredPoems.prefix(itemsPerPage))
+        currentPage = 1
+    }
+    
+    func loadMoreContent() {
+        guard !isLoading else { return }
+        
+        isLoading = true
+        
+        // شبیه‌سازی تاخیر شبکه
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            let filteredPoems = if self.searchText.isEmpty {
+                self.allPoems
+            } else {
+                self.allPoems.filter { poem in
+                    poem.title.contains(self.searchText) ||
+                    poem.content.contains(self.searchText) ||
+                    (poem.vazn?.contains(self.searchText) ?? false)
+                }
+            }
+            
+            let startIndex = self.currentPage * self.itemsPerPage
+            let endIndex = min(startIndex + self.itemsPerPage, filteredPoems.count)
+            
+            if startIndex < filteredPoems.count {
+                self.searchResults.append(contentsOf: filteredPoems[startIndex..<endIndex])
+                self.currentPage += 1
+            }
+            
+            self.isLoading = false
         }
     }
     
