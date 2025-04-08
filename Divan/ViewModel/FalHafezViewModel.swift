@@ -6,6 +6,8 @@ class FalHafezViewModel: ObservableObject {
     @Published var hafezPoems: [Poem] = []
     @Published var babaTaherPoems: [Poem] = []
     @Published var selectedPoet: PoetType = .hafez
+    @Published var isLoading = false
+    @Published var error: Error?
     
     init() {
         loadPoems()

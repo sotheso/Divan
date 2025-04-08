@@ -6,11 +6,15 @@
 //
 
 import SwiftUI
+import SafariServices
+import UIKit
 
 struct FalHafezView: View {
     @StateObject private var viewModel = FalHafezViewModel()
     @State private var hasTakenFal = false
     @Environment(\.colorScheme) var colorScheme
+    @State private var showSafari = false
+    @State private var selectedURL: URL?
     
     var body: some View {
         NavigationStack {
@@ -49,12 +53,41 @@ struct FalHafezView: View {
                                 }
                                 
                                 // دکمه‌های عملیات
-                                HStack(spacing: 16) {
+                                VStack(spacing: 16) {
                                     ShareLink(item: "\(poem.title)\n\n\(poem.content)\n\nوزن: \(poem.vazn ?? "")") {
                                         Label("اشتراک‌گذاری", systemImage: "square.and.arrow.up")
                                     }
                                     .buttonStyle(.bordered)
                                     .tint(.blue)
+                                    
+                                    // دکمه‌های پادکست
+                                    if !poem.link1.isEmpty {
+                                        Button(action: {
+                                            if let url = URL(string: poem.link1) {
+                                                selectedURL = url
+                                                showSafari = true
+                                            }
+                                        }) {
+                                            Label("گوش دادن در Castbox", systemImage: "headphones")
+                                                .frame(maxWidth: .infinity)
+                                        }
+                                        .buttonStyle(.bordered)
+                                        .tint(.orange)
+                                    }
+                                    
+                                    if !poem.link2.isEmpty {
+                                        Button(action: {
+                                            if let url = URL(string: poem.link2) {
+                                                selectedURL = url
+                                                showSafari = true
+                                            }
+                                        }) {
+                                            Label("گوش دادن در Apple Podcast", systemImage: "headphones")
+                                                .frame(maxWidth: .infinity)
+                                        }
+                                        .buttonStyle(.bordered)
+                                        .tint(.purple)
+                                    }
                                     
                                     Button(action: {
                                         withAnimation {
@@ -87,7 +120,6 @@ struct FalHafezView: View {
                                     .font(.headline)
                                     .multilineTextAlignment(.center)
                                     .foregroundStyle(.secondary)
-                                
                                 
                                 Spacer()
                                 Spacer()
@@ -122,6 +154,11 @@ struct FalHafezView: View {
                 }
             }
             .navigationTitle("فال \(viewModel.selectedPoet.rawValue)")
+            .sheet(isPresented: $showSafari) {
+                if let url = selectedURL {
+                    SafariView(url: url)
+                }
+            }
         }
     }
 }

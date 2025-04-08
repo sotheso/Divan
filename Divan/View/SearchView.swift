@@ -104,26 +104,29 @@ struct SearchView: View {
     }
     
     private func poemCard(_ poem: Poem) -> some View {
-        VStack(alignment: .center, spacing: 12) {
-            Text(poem.title)
-                .font(.headline)
-                .foregroundStyle(.primary)
-                .lineLimit(1)
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
-            
-            Text(poem.content)
-                .font(.body)
-                .lineLimit(3)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
+        NavigationLink(destination: DetailView(poem: poem)) {
+            VStack(alignment: .center, spacing: 12) {
+                Text(poem.title)
+                    .font(.headline)
+                    .foregroundStyle(.primary)
+                    .lineLimit(1)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity)
+                
+                Text(poem.content)
+                    .font(.body)
+                    .lineLimit(3)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity)
+            }
+            .frame(height: 120)
+            .padding()
+            .background(.background)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 2)
         }
-        .frame(height: 120)
-        .padding()
-        .background(.background)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 2)
+        .buttonStyle(.plain)
     }
     
     private var emptyStateView: some View {

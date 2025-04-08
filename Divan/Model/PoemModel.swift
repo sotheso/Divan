@@ -7,6 +7,8 @@ struct Poem: Identifiable {
     let content: String
     let vazn: String?
     let poet: PoetType
+    let link1: String
+    let link2: String
 }
 
 enum PoetType: String {
@@ -101,7 +103,14 @@ class PoemModel: ObservableObject {
                   let content = item["content"] as? String else {
                 return nil
             }
-            return Poem(title: title, content: content, vazn: item["vazn"] as? String, poet: .hafez)
+            return Poem(
+                title: title,
+                content: content,
+                vazn: item["vazn"] as? String,
+                poet: .hafez,
+                link1: item["link1"] as? String ?? "",
+                link2: item["link2"] as? String ?? ""
+            )
         }
     }
     
@@ -118,7 +127,14 @@ class PoemModel: ObservableObject {
                   let content = item["content"] as? String else {
                 return nil
             }
-            return Poem(title: title, content: content, vazn: item["vazn"] as? String, poet: .babaTaher)
+            return Poem(
+                title: title,
+                content: content,
+                vazn: item["vazn"] as? String,
+                poet: .babaTaher,
+                link1: item["link1"] as? String ?? "",
+                link2: item["link2"] as? String ?? ""
+            )
         }
     }
 } 
