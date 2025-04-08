@@ -7,7 +7,7 @@
 
 import SwiftUI
 import SafariServices
-import UIKit
+import AVFoundation
 
 struct FalHafezView: View {
     @StateObject private var viewModel = FalHafezViewModel()
@@ -15,6 +15,7 @@ struct FalHafezView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var showSafari = false
     @State private var selectedURL: URL?
+    @State private var isAnimating = false
     
     var body: some View {
         NavigationStack {
@@ -126,9 +127,15 @@ struct FalHafezView: View {
 
                                 HStack{
                                     Button(action: {
-                                        withAnimation {
-                                            viewModel.getRandomPoem()
-                                            hasTakenFal = true
+                                        // فعال کردن انیمیشن قبل از دریافت فال
+                                        isAnimating = true
+                                        
+                                        // پس از مدتی کوتاه، فال را دریافت کن
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                                            withAnimation {
+                                                viewModel.getRandomPoem()
+                                                hasTakenFal = true
+                                            }
                                         }
                                     }) {
                                         Label("فال \(viewModel.selectedPoet.rawValue)", systemImage: "sparkles")
@@ -152,6 +159,9 @@ struct FalHafezView: View {
                     }
                     .padding(.vertical)
                 }
+                
+                // کامپوننت انیمیشن ورق زدن
+                PageTurnAnimation(isAnimating: $isAnimating)
             }
             .navigationTitle("فال \(viewModel.selectedPoet.rawValue)")
             .sheet(isPresented: $showSafari) {
