@@ -1,5 +1,9 @@
 import SwiftUI
 import SafariServices
+import Foundation
+
+// MARK: - You need to add the proper import for SimpleFavoriteManager:
+// import or use the correct module name where SimpleFavoriteManager is defined
 
 struct DetailView: View {
     let poem: Poem
@@ -7,6 +11,21 @@ struct DetailView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var showSafari = false
     @State private var selectedURL: URL?
+    @State private var isFavorite: Bool = false
+    @State private var showFavoriteToast = false
+    
+    // MARK: - Local methods to manage favorites
+    private func addToFavorites(id: String) {
+        SimpleFavoriteManager.shared.addFavorite(id: id)
+    }
+    
+    private func removeFromFavorites(id: String) {
+        SimpleFavoriteManager.shared.removeFavorite(id: id)
+    }
+    
+    private func checkIsFavorite(id: String) -> Bool {
+        return SimpleFavoriteManager.shared.isFavorite(id: id)
+    }
     
     var body: some View {
         ScrollView {
@@ -35,6 +54,18 @@ struct DetailView: View {
                     }
                     .buttonStyle(.bordered)
                     .tint(.blue)
+                    
+                    Button(action: {
+                        savePoem()
+                    }) {
+                        Label(
+                            isFavorite ? "حذف از علاقه‌مندی‌ها" : "ذخیره در علاقه‌مندی‌ها", 
+                            systemImage: isFavorite ? "heart.fill" : "heart"
+                        )
+                        .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(isFavorite ? .red : .pink)
                     
                     Text("خوانش غزل")
                         .font(.caption)
@@ -94,6 +125,52 @@ struct DetailView: View {
             if let url = selectedURL {
                 SafariView(url: url)
             }
+        }
+        .onAppear {
+            // بررسی وضعیت ذخیره‌سازی غزل هنگام نمایش
+            isFavorite = checkIsFavorite(id: poem.id.uuidString)
+        }
+        .overlay(
+            // نمایش پیام تایید
+            Group {
+                if showFavoriteToast {
+                    VStack {
+                        Spacer()
+                        
+                        Text(isFavorite ? "به لیست علاقه‌مندی‌ها اضافه شد" : "از لیست علاقه‌مندی‌ها حذف شد")
+                            .font(.footnote)
+                            .padding()
+                            .background(.regularMaterial)
+                            .cornerRadius(10)
+                            .padding(.bottom, 20)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+                    .animation(.easeInOut(duration: 0.3), value: showFavoriteToast)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            showFavoriteToast = false
+                        }
+                    }
+                }
+            }
+        )
+    }
+    
+    // متد ذخیره‌سازی غزل
+    private func savePoem() {
+        if isFavorite {
+            // اگر قبلاً ذخیره شده بود، حذف می‌کنیم
+            removeFromFavorites(id: poem.id.uuidString)
+            isFavorite = false
+        } else {
+            // ذخیره غزل جدید
+            addToFavorites(id: poem.id.uuidString)
+            isFavorite = true
+        }
+        
+        // نمایش پیام تایید
+        withAnimation {
+            showFavoriteToast = true
         }
     }
 }

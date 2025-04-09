@@ -40,7 +40,7 @@ struct SearchView: View {
             TextField("جستجو در اشعار...", text: $poemModel.searchText)
                 .textFieldStyle(.plain)
                 .submitLabel(.search)
-                .onChange(of: poemModel.searchText) { _ in
+                .onChange(of: poemModel.searchText) { oldValue, newValue in
                     poemModel.search()
                 }
             

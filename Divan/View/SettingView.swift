@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import CoreData
+import Foundation
 
 struct SettingView: View {
-    @EnvironmentObject var settings: AppSettings
+    @EnvironmentObject var appSettings: AppSettings
     
     let poets = ["حافظ", "سعدی", "بابا طاهر", "مولانا", "خیام", "فردوسی"]
     
@@ -16,7 +18,7 @@ struct SettingView: View {
         NavigationView {
             List {
                 Section(header: Text("ظاهر برنامه").dynamicFont(baseSize: 14)) {
-                    Toggle(isOn: $settings.isDarkMode) {
+                    Toggle(isOn: $appSettings.isDarkMode) {
                         Label("حالت تاریک", systemImage: "moon.fill")
                             .dynamicFont(baseSize: 16)
                     }
@@ -25,35 +27,40 @@ struct SettingView: View {
                         Label("اندازه متن", systemImage: "textformat.size")
                             .dynamicFont(baseSize: 16)
                         
-                        Slider(value: $settings.fontSize, in: 0.8...1.5) {
+                        Slider(value: $appSettings.fontSize, in: 0.8...1.5) {
                             Text("اندازه متن")
                         }
                         .tint(.purple)
                         
                         HStack {
                             Text("A")
-                                .font(.system(size: 12 * settings.fontSize))
+                                .font(.system(size: 12 * appSettings.fontSize))
                             Spacer()
                             Text("A")
-                                .font(.system(size: 24 * settings.fontSize))
+                                .font(.system(size: 24 * appSettings.fontSize))
                         }
                         .foregroundColor(.gray)
                     }
                     .padding(.vertical, 4)
                     
-                    Toggle(isOn: $settings.isBoldFont) {
+                    Toggle(isOn: $appSettings.isBoldFont) {
                         Label("متن ضخیم", systemImage: "bold")
                             .dynamicFont(baseSize: 16)
                     }
                 }
                 
                 Section(header: Text("شخصی‌سازی").dynamicFont(baseSize: 14)) {
-                    NavigationLink(destination: Text("لیست علاقه‌مندی‌های شما").dynamicFont()) {
-                        Label("علاقه‌مندی‌ها", systemImage: "heart.fill")
+                    NavigationLink(destination: FavoriteIdsView()) {
+                        Label("غزل‌های مورد علاقه", systemImage: "heart.fill")
                             .dynamicFont(baseSize: 16)
                     }
                     
-                    Picker(selection: $settings.favoritePoet) {
+                    NavigationLink(destination: Text("لیست علاقه‌مندی‌های شما").dynamicFont()) {
+                        Label("علاقه‌مندی‌ها", systemImage: "star.fill")
+                            .dynamicFont(baseSize: 16)
+                    }
+                    
+                    Picker(selection: $appSettings.favoritePoet) {
                         ForEach(poets, id: \.self) { poet in
                             Text(poet)
                                 .dynamicFont(baseSize: 16)
