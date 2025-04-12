@@ -12,79 +12,50 @@ import Foundation
 struct SettingView: View {
     @EnvironmentObject var appSettings: AppSettings
     
-    let poets = ["حافظ", "سعدی", "بابا طاهر", "مولانا", "خیام", "فردوسی"]
-    
     var body: some View {
         NavigationView {
             List {
-                Section(header: Text("ظاهر برنامه").dynamicFont(baseSize: 14)) {
+                Section(header: Text("ظاهر برنامه")) {
                     Toggle(isOn: $appSettings.isDarkMode) {
                         Label("حالت تاریک", systemImage: "moon.fill")
-                            .dynamicFont(baseSize: 16)
-                    }
-                    
-                    VStack(alignment: .leading, spacing: 8) {
-                        Label("اندازه متن", systemImage: "textformat.size")
-                            .dynamicFont(baseSize: 16)
-                        
-                        Slider(value: $appSettings.fontSize, in: 0.8...1.5) {
-                            Text("اندازه متن")
-                        }
-                        .tint(.purple)
-                        
-                        HStack {
-                            Text("A")
-                                .font(.system(size: 12 * appSettings.fontSize))
-                            Spacer()
-                            Text("A")
-                                .font(.system(size: 24 * appSettings.fontSize))
-                        }
-                        .foregroundColor(.gray)
-                    }
-                    .padding(.vertical, 4)
-                    
-                    Toggle(isOn: $appSettings.isBoldFont) {
-                        Label("متن ضخیم", systemImage: "bold")
-                            .dynamicFont(baseSize: 16)
                     }
                 }
                 
-                Section(header: Text("شخصی‌سازی").dynamicFont(baseSize: 14)) {
-                    NavigationLink(destination: FavoriteIdsView()) {
+                Section(header: Text("شخصی‌سازی")) {
+                    NavigationLink(destination: MyFavoritePoemsView()) {
                         Label("غزل‌های مورد علاقه", systemImage: "heart.fill")
-                            .dynamicFont(baseSize: 16)
-                    }
-                    
-                    NavigationLink(destination: Text("لیست علاقه‌مندی‌های شما").dynamicFont()) {
-                        Label("علاقه‌مندی‌ها", systemImage: "star.fill")
-                            .dynamicFont(baseSize: 16)
-                    }
-                    
-                    Picker(selection: $appSettings.favoritePoet) {
-                        ForEach(poets, id: \.self) { poet in
-                            Text(poet)
-                                .dynamicFont(baseSize: 16)
-                                .tag(poet)
-                        }
-                    } label: {
-                        Label("شاعر مورد علاقه", systemImage: "star.fill")
-                            .dynamicFont(baseSize: 16)
-                    }
-                }
-                
-                Section(header: Text("درباره برنامه").dynamicFont(baseSize: 14)) {
-                    HStack {
-                        Text("نسخه برنامه")
-                            .dynamicFont(baseSize: 16)
-                        Spacer()
-                        Text("1.0.0")
-                            .dynamicFont(baseSize: 16)
-                            .foregroundColor(.gray)
                     }
                 }
             }
             .navigationTitle("تنظیمات")
+            .overlay(
+                VStack {
+                    Spacer()
+                    FooterText()
+                }
+                .padding(.bottom, 20)
+            )
         }
+    }
+}
+
+struct FooterText: View {
+    var body: some View {
+        VStack(spacing: 4) {
+            HStack(spacing: 4) {
+                Link("Sothesom", destination: URL(string: "https://t.me/sothesom")!)
+                    .foregroundColor(.blue)
+                    .font(.footnote)
+                
+                Text("ساخته شده توسط ")
+                    .foregroundColor(.gray)
+                    .font(.footnote)
+            }
+            Text("نسخه برنامه: 0.0.1")
+                .foregroundColor(.gray)
+                .font(.footnote)
+        }
+        .multilineTextAlignment(.center)
     }
 }
 

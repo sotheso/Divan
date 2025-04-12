@@ -137,4 +137,20 @@ class PoemModel: ObservableObject {
             )
         }
     }
+    
+    func allFavoritePoems(_ favoriteIds: [String]) -> [Poem] {
+        var poems: [Poem] = []
+        
+        // Check Hafez poems
+        selectedPoet = .hafez
+        loadPoems()
+        poems.append(contentsOf: allPoems.filter { favoriteIds.contains($0.title) })
+        
+        // Check Baba Taher poems
+        selectedPoet = .babaTaher
+        loadPoems()
+        poems.append(contentsOf: allPoems.filter { favoriteIds.contains($0.title) })
+        
+        return poems
+    }
 } 

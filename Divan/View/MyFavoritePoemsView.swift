@@ -1,89 +1,47 @@
 import SwiftUI
-import Foundation
 
-// ساختار داده برای غزل‌های مورد علاقه
-struct MyFavoritePoem: Identifiable, Codable {
-    var id: String
-    var title: String
-    var content: String
-    var poet: String
-    var vazn: String?
-    var link1: String?
-    var link2: String?
-    var date: Date
-}
-
-// مدیریت ذخیره‌سازی غزل‌های مورد علاقه با استفاده از UserDefaults
-class MyFavoritePoemManager: ObservableObject {
-    static let shared = MyFavoritePoemManager()
+// MARK: - Favorite Poem Card View
+private struct FavoritePoemCard: View {
+    let poem: MyFavoritePoem
     
-    private let favoritesKey = "myFavoritePoemsKey"
-    
-    @Published var favoritePoems: [MyFavoritePoem] = []
-    
-    init() {
-        loadFavorites()
-    }
-    
-    // بارگیری غزل‌های مورد علاقه از UserDefaults
-    func loadFavorites() {
-        if let data = UserDefaults.standard.data(forKey: favoritesKey) {
-            if let decoded = try? JSONDecoder().decode([MyFavoritePoem].self, from: data) {
-                self.favoritePoems = decoded
-                return
+    var body: some View {
+        VStack(alignment: .trailing, spacing: 12) {
+            Text(poem.title)
+                .font(.headline)
+                .foregroundStyle(.primary)
+                .lineLimit(1)
+                .multilineTextAlignment(.trailing)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+            
+            Text(poem.content)
+                .font(.body)
+                .lineLimit(3)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.trailing)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+            
+            HStack {
+                Text(poem.poet)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Spacer()
             }
         }
-        
-        self.favoritePoems = []
-    }
-    
-    // ذخیره یک غزل جدید
-    func addFavorite(id: String, title: String, content: String, poet: String, vazn: String? = nil, link1: String? = nil, link2: String? = nil) {
-        // بررسی تکراری نبودن
-        if !isFavorite(id: id) {
-            let newFavorite = MyFavoritePoem(
-                id: id,
-                title: title,
-                content: content,
-                poet: poet,
-                vazn: vazn,
-                link1: link1,
-                link2: link2,
-                date: Date()
-            )
-            
-            favoritePoems.append(newFavorite)
-            saveFavorites()
-        }
-    }
-    
-    // حذف یک غزل از لیست علاقه‌مندی‌ها
-    func removeFavorite(id: String) {
-        favoritePoems.removeAll { $0.id == id }
-        saveFavorites()
-    }
-    
-    // بررسی وجود یک غزل در لیست علاقه‌مندی‌ها
-    func isFavorite(id: String) -> Bool {
-        return favoritePoems.contains { $0.id == id }
-    }
-    
-    // ذخیره لیست کامل علاقه‌مندی‌ها در UserDefaults
-    private func saveFavorites() {
-        if let encoded = try? JSONEncoder().encode(favoritePoems) {
-            UserDefaults.standard.set(encoded, forKey: favoritesKey)
-        }
+        .frame(maxWidth: .infinity, alignment: .trailing)
+        .padding()
+        .background(Color(.secondarySystemGroupedBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 2)
     }
 }
 
-// صفحه نمایش غزل‌های مورد علاقه
+// MARK: - Main View
 struct MyFavoritePoemsView: View {
     @StateObject private var favoriteManager = MyFavoritePoemManager.shared
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         VStack(spacing: 0) {
-            // نتایج غزل‌های ذخیره شده
             if favoriteManager.favoritePoems.isEmpty {
                 emptyStateView
             } else {
@@ -91,60 +49,57 @@ struct MyFavoritePoemsView: View {
             }
         }
         .navigationTitle("غزل‌های مورد علاقه")
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             favoriteManager.loadFavorites()
         }
+        .background(Color(.systemGroupedBackground))
     }
     
     private var favoritesList: some View {
-        ScrollView {
-            LazyVStack(spacing: 16) {
-                ForEach(favoriteManager.favoritePoems) { poem in
-                    poemCard(poem)
+        List {
+            ForEach(favoriteManager.favoritePoems) { poem in
+                Button {
+                    let detailView = DetailView(
+                        poem: Poem(
+                            title: poem.title,
+                            content: poem.content,
+                            vazn: poem.vazn,
+                            poet: PoetType(rawValue: poem.poet) ?? .hafez,
+                            link1: poem.link1 ?? "",
+                            link2: poem.link2 ?? ""
+                        ),
+                        hidesFavoriteButton: true
+                    )
+                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                       let window = windowScene.windows.first,
+                       let rootViewController = window.rootViewController {
+                        let hostingController = UIHostingController(rootView: detailView)
+                        rootViewController.present(hostingController, animated: true)
+                    }
+                } label: {
+                    FavoritePoemCard(poem: poem)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .listRowInsets(EdgeInsets())
+                .listRowBackground(Color(.systemGroupedBackground))
+                .listRowSeparator(.hidden)
+                .padding(.horizontal)
+                .padding(.vertical, 4)
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    Button(role: .destructive) {
+                        withAnimation {
+                            favoriteManager.removeFavorite(id: poem.id)
+                        }
+                    } label: {
+                        Label("حذف", systemImage: "trash.fill")
+                    }
+                    .tint(.red)
                 }
             }
-            .padding()
         }
-        .background(Color(white: 0.95))
-    }
-    
-    private func poemCard(_ poem: MyFavoritePoem) -> some View {
-        VStack(alignment: .center, spacing: 12) {
-            Text(poem.title)
-                .font(.headline)
-                .foregroundStyle(.primary)
-                .lineLimit(1)
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
-            
-            Text(poem.content)
-                .font(.body)
-                .lineLimit(3)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
-            
-            HStack {
-                Text(poem.poet)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                
-                Spacer()
-                
-                Button(action: {
-                    favoriteManager.removeFavorite(id: poem.id)
-                }) {
-                    Image(systemName: "trash.fill")
-                        .foregroundStyle(.red)
-                }
-                .buttonStyle(.plain)
-            }
-        }
-        .frame(minHeight: 120)
-        .padding()
-        .background(.background)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 2)
+        .listStyle(.plain)
+        .background(Color(.systemGroupedBackground))
     }
     
     private var emptyStateView: some View {
@@ -164,38 +119,12 @@ struct MyFavoritePoemsView: View {
                 .padding(.horizontal)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(white: 0.95))
+        .background(Color(.systemGroupedBackground))
     }
 }
 
-// کمک‌کننده برای ذخیره غزل‌ها از صفحات دیگر
-class MyPoemSaver {
-    static let shared = MyPoemSaver()
-    
-    func savePoem(id: String, title: String, content: String, poet: String, vazn: String? = nil, link1: String? = nil, link2: String? = nil) {
-        MyFavoritePoemManager.shared.addFavorite(
-            id: id,
-            title: title,
-            content: content,
-            poet: poet,
-            vazn: vazn,
-            link1: link1,
-            link2: link2
-        )
-    }
-    
-    func removePoem(id: String) {
-        MyFavoritePoemManager.shared.removeFavorite(id: id)
-    }
-    
-    func isPoemSaved(id: String) -> Bool {
-        return MyFavoritePoemManager.shared.isFavorite(id: id)
-    }
-}
-
-// پیش‌نمایش
 #Preview {
-    NavigationStack {
+    NavigationView {
         MyFavoritePoemsView()
     }
 } 

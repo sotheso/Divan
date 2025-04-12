@@ -7,6 +7,7 @@ import Foundation
 
 struct DetailView: View {
     let poem: Poem
+    let hidesFavoriteButton: Bool
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) var colorScheme
     @State private var showSafari = false
@@ -14,17 +15,30 @@ struct DetailView: View {
     @State private var isFavorite: Bool = false
     @State private var showFavoriteToast = false
     
+    init(poem: Poem, hidesFavoriteButton: Bool = false) {
+        self.poem = poem
+        self.hidesFavoriteButton = hidesFavoriteButton
+    }
+    
     // MARK: - Local methods to manage favorites
-    private func addToFavorites(id: String) {
-        SimpleFavoriteManager.shared.addFavorite(id: id)
+    private func addToFavorites() {
+        MyPoemSaver.shared.savePoem(
+            id: poem.id.uuidString,
+            title: poem.title,
+            content: poem.content,
+            poet: poem.poet.rawValue,
+            vazn: poem.vazn,
+            link1: poem.link1,
+            link2: poem.link2
+        )
     }
     
-    private func removeFromFavorites(id: String) {
-        SimpleFavoriteManager.shared.removeFavorite(id: id)
+    private func removeFromFavorites() {
+        MyPoemSaver.shared.removePoem(id: poem.id.uuidString)
     }
     
-    private func checkIsFavorite(id: String) -> Bool {
-        return SimpleFavoriteManager.shared.isFavorite(id: id)
+    private func checkIsFavorite() -> Bool {
+        return MyPoemSaver.shared.isPoemSaved(id: poem.id.uuidString)
     }
     
     var body: some View {
@@ -55,17 +69,19 @@ struct DetailView: View {
                     .buttonStyle(.bordered)
                     .tint(.blue)
                     
-                    Button(action: {
-                        savePoem()
-                    }) {
-                        Label(
-                            isFavorite ? "حذف از علاقه‌مندی‌ها" : "ذخیره در علاقه‌مندی‌ها", 
-                            systemImage: isFavorite ? "heart.fill" : "heart"
-                        )
-                        .frame(maxWidth: .infinity)
+                    if !hidesFavoriteButton {
+                        Button(action: {
+                            savePoem()
+                        }) {
+                            Label(
+                                isFavorite ? "حذف از علاقه‌مندی‌ها" : "ذخیره در علاقه‌مندی‌ها", 
+                                systemImage: isFavorite ? "heart.fill" : "heart"
+                            )
+                            .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.bordered)
+                        .tint(isFavorite ? .red : .pink)
                     }
-                    .buttonStyle(.bordered)
-                    .tint(isFavorite ? .red : .pink)
                     
                     Text("خوانش غزل")
                         .font(.caption)
@@ -128,7 +144,7 @@ struct DetailView: View {
         }
         .onAppear {
             // بررسی وضعیت ذخیره‌سازی غزل هنگام نمایش
-            isFavorite = checkIsFavorite(id: poem.id.uuidString)
+            isFavorite = checkIsFavorite()
         }
         .overlay(
             // نمایش پیام تایید
@@ -160,11 +176,11 @@ struct DetailView: View {
     private func savePoem() {
         if isFavorite {
             // اگر قبلاً ذخیره شده بود، حذف می‌کنیم
-            removeFromFavorites(id: poem.id.uuidString)
+            removeFromFavorites()
             isFavorite = false
         } else {
             // ذخیره غزل جدید
-            addToFavorites(id: poem.id.uuidString)
+            addToFavorites()
             isFavorite = true
         }
         
