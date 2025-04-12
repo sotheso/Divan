@@ -9,22 +9,29 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var settings: AppSettings
+    @State private var showAlarmView = false
     
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
                 // Logo and Title Section
                 HStack(spacing: 12) {
-                    Image(systemName: "book.circle.fill")
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .foregroundStyle(.tint)
+                    Button(action: {
+                        showAlarmView = true
+                    }) {
+                        Image(systemName: settings.notificationsEnabled ? "bell.fill" : "bell")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .foregroundStyle(.tint)
+                            .symbolEffect(.bounce, value: settings.notificationsEnabled)
+                    }
                     
                     Spacer()
                     
-                    Text("گنجینه‌ای از اشعار شاعران پارسی")
-                        .font(.headline)
-                        .foregroundStyle(.secondary)
+                    Text("Divan")
+                        .font(.title)
+                        .fontWeight(.bold)
                 }
                 .padding(.vertical, 12)
                 
@@ -76,6 +83,9 @@ struct HomeView: View {
         }
         .navigationTitle("دیوان شعر پارسی")
         .navigationBarTitleDisplayMode(.large)
+        .sheet(isPresented: $showAlarmView) {
+            AlarmView()
+        }
     }
 }
 
