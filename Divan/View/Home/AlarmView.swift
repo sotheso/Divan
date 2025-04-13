@@ -14,9 +14,8 @@ struct AlarmView: View {
     
     var selectedTimeText: String {
         let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        formatter.dateStyle = .none
-        formatter.locale = Locale(identifier: "fa_IR")
+        formatter.dateFormat = "HH:mm"
+        formatter.locale = Locale(identifier: "en_US")
         return formatter.string(from: settings.dailyReminderTime)
     }
     
@@ -116,6 +115,7 @@ struct AlarmView: View {
                             DatePicker("", selection: $settings.dailyReminderTime, displayedComponents: .hourAndMinute)
                                 .datePickerStyle(.wheel)
                                 .labelsHidden()
+                                .environment(\.locale, Locale(identifier: "en_US"))
                                 .onChange(of: settings.dailyReminderTime) { _, _ in
                                     if settings.notificationsEnabled {
                                         scheduleNotifications()

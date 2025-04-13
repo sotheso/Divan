@@ -166,7 +166,7 @@ struct FalHafezView: View {
             .navigationTitle("فال \(viewModel.selectedPoet.rawValue)")
             .sheet(isPresented: $showSafari) {
                 if let url = selectedURL {
-                    SafariView(url: url)
+                    safariOpen(url: url)
                 }
             }
         }

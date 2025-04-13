@@ -63,29 +63,43 @@ struct DetailView: View {
                 
                 // دکمه‌های عملیات
                 VStack(spacing: 16) {
-                    ShareLink(item: "\(poem.title)\n\n\(poem.content)\n\nوزن: \(poem.vazn ?? "")") {
-                        Label("اشتراک‌گذاری", systemImage: "square.and.arrow.up")
-                    }
-                    .buttonStyle(.bordered)
-                    .tint(.blue)
-                    
-                    if !hidesFavoriteButton {
-                        Button(action: {
-                            savePoem()
-                        }) {
-                            Label(
-                                isFavorite ? "حذف از علاقه‌مندی‌ها" : "ذخیره در علاقه‌مندی‌ها", 
-                                systemImage: isFavorite ? "heart.fill" : "heart"
-                            )
+                    HStack(spacing: 16) {
+                        ShareLink(item: "\(poem.title)\n\n\(poem.content)\n\nوزن: \(poem.vazn ?? "")") {
+                            Label {
+                                Text("اشتراک‌گذاری")
+                                    .font(.callout)
+                            } icon: {
+                                Image(systemName: "square.and.arrow.up")
+                            }
                             .frame(maxWidth: .infinity)
                         }
                         .buttonStyle(.bordered)
-                        .tint(isFavorite ? .red : .pink)
+                        .tint(.blue)
+                        
+                        if !hidesFavoriteButton {
+                            Button(action: {
+                                savePoem()
+                            }) {
+                                Label {
+                                    Text(isFavorite ? "ذخیره شده" : "ذخیره کردن")
+                                        .font(.callout)
+                                } icon: {
+                                    Image(systemName: isFavorite ? "bookmark.fill" : "bookmark")
+                                }
+                                .frame(maxWidth: .infinity)
+                            }
+                            .buttonStyle(.bordered)
+                            .tint(isFavorite ? .red : .pink)
+                        }
                     }
                     
-                    Text("خوانش غزل")
-                        .font(.caption)
-                        .foregroundStyle(Color.gray)
+                    HStack {
+                        Image(systemName: "play.circle")
+                            .foregroundStyle(Color.gray)
+                        Text("خوانش غزل")
+                            .font(.caption)
+                            .foregroundStyle(Color.gray)
+                    }
                     
                     // دکمه‌های پادکست
                     if !poem.link1.isEmpty {
@@ -95,8 +109,17 @@ struct DetailView: View {
                                 showSafari = true
                             }
                         }) {
-                            Label("گوش دادن در Castbox", systemImage: "headphones")
-                                .frame(maxWidth: .infinity)
+                            Label {
+                                Text("گوش دادن در کست باکس")
+                                    .font(.callout)
+                            } icon: {
+                                Image("castbox")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 24, height: 24)
+                                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                            }
+                            .frame(maxWidth: .infinity)
                         }
                         .buttonStyle(.bordered)
                         .tint(.orange)
@@ -109,8 +132,16 @@ struct DetailView: View {
                                 showSafari = true
                             }
                         }) {
-                            Label("گوش دادن در Apple Podcast", systemImage: "headphones")
-                                .frame(maxWidth: .infinity)
+                            Label {
+                                Text("گوش دادن در اپل پاکست")
+                                    .font(.callout)
+                            } icon: {
+                                Image("Podcasts")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 24, height: 24)
+                            }
+                            .frame(maxWidth: .infinity)
                         }
                         .buttonStyle(.bordered)
                         .tint(.purple)
@@ -131,15 +162,18 @@ struct DetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: { dismiss() }) {
-                    Image(systemName: "chevron.right")
-                        .foregroundStyle(.blue)
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.backward")
+                        Text("برگشت")
+                    }
+                    .foregroundStyle(.blue)
                 }
             }
         }
         .ignoresSafeArea()
         .sheet(isPresented: $showSafari) {
             if let url = selectedURL {
-                SafariView(url: url)
+                safariOpen(url: url)
             }
         }
         .onAppear {
