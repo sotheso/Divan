@@ -9,7 +9,7 @@ import SwiftUI
 import SafariServices
 import AVFoundation
 
-struct FalHafezView: View {
+struct FalView: View {
     @StateObject private var viewModel = FalHafezViewModel()
     @State private var hasTakenFal = false
     @Environment(\.colorScheme) var colorScheme
@@ -23,8 +23,8 @@ struct FalHafezView: View {
                 // پس‌زمینه گرادیانت
                 LinearGradient(
                     colors: [
-                        Color(.systemBackground),
-                        Color(.secondarySystemBackground)
+                        Color("Color").opacity(0.1),
+                        Color(.systemBackground)
                     ],
                     startPoint: .top,
                     endPoint: .bottom
@@ -39,6 +39,7 @@ struct FalHafezView: View {
                                 Text(poem.title)
                                     .font(.system(.title2, design: .serif))
                                     .fontWeight(.bold)
+                                    .foregroundStyle(Color("Color"))
                                     .multilineTextAlignment(.center)
                                     .padding(.top)
                                 
@@ -59,7 +60,7 @@ struct FalHafezView: View {
                                         Label("اشتراک‌گذاری", systemImage: "square.and.arrow.up")
                                     }
                                     .buttonStyle(.bordered)
-                                    .tint(.blue)
+                                    .tint(Color("Color"))
                                     
                                     // دکمه‌های پادکست
                                     if !poem.link1.isEmpty {
@@ -73,7 +74,7 @@ struct FalHafezView: View {
                                                 .frame(maxWidth: .infinity)
                                         }
                                         .buttonStyle(.bordered)
-                                        .tint(.orange)
+                                        .tint(Color("Color"))
                                     }
                                     
                                     if !poem.link2.isEmpty {
@@ -87,7 +88,7 @@ struct FalHafezView: View {
                                                 .frame(maxWidth: .infinity)
                                         }
                                         .buttonStyle(.bordered)
-                                        .tint(.purple)
+                                        .tint(Color("Color"))
                                     }
                                     
                                     Button(action: {
@@ -99,14 +100,14 @@ struct FalHafezView: View {
                                         Label("فال جدید", systemImage: "arrow.counterclockwise")
                                     }
                                     .buttonStyle(.bordered)
-                                    .tint(.blue)
+                                    .tint(Color("Color"))
                                 }
                             }
                             .padding(24)
                             .background(
                                 RoundedRectangle(cornerRadius: 16)
                                     .fill(Color(.systemBackground))
-                                    .shadow(radius: 8, x: 0, y: 4)
+                                    .shadow(color: Color("AccentColor").opacity(0.2), radius: 8, x: 0, y: 4)
                             )
                             .padding(.horizontal)
                         } else {
@@ -115,22 +116,19 @@ struct FalHafezView: View {
                                 Image(systemName: "book.circle.fill")
                                     .resizable()
                                     .frame(width: 80, height: 80)
-                                    .foregroundStyle(.blue)
+                                    .foregroundStyle(Color("Color"))
                                 
                                 Text("برای گرفتن فال، نیت کنید و دکمه فال را لمس کنید")
                                     .font(.headline)
                                     .multilineTextAlignment(.center)
-                                    .foregroundStyle(.secondary)
+                                    .foregroundStyle(Color("Color"))
                                 
                                 Spacer()
                                 Spacer()
 
-                                HStack{
+                                HStack {
                                     Button(action: {
-                                        // فعال کردن انیمیشن قبل از دریافت فال
                                         isAnimating = true
-                                        
-                                        // پس از مدتی کوتاه، فال را دریافت کن
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                                             withAnimation {
                                                 viewModel.getRandomPoem()
@@ -142,6 +140,7 @@ struct FalHafezView: View {
                                             .frame(maxWidth: .infinity)
                                     }
                                     .buttonStyle(.borderedProminent)
+                                    .tint(Color("Color"))
                                     .controlSize(.large)
                                     
                                     Button(action: { viewModel.switchPoet() }) {
@@ -150,6 +149,7 @@ struct FalHafezView: View {
                                         .frame(maxWidth: .infinity)
                                     }
                                     .buttonStyle(.bordered)
+                                    .tint(Color("Color"))
                                     .controlSize(.large)
                                 }
                             }
@@ -160,7 +160,6 @@ struct FalHafezView: View {
                     .padding(.vertical)
                 }
                 
-                // کامپوننت انیمیشن ورق زدن
                 PageTurnAnimation(isAnimating: $isAnimating)
             }
             .navigationTitle("فال \(viewModel.selectedPoet.rawValue)")
@@ -174,5 +173,5 @@ struct FalHafezView: View {
 }
 
 #Preview {
-    FalHafezView()
+    FalView()
 }

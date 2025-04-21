@@ -14,8 +14,32 @@ struct SearchView: View {
     var body: some View {
         VStack(spacing: 0) {
             // نوار جستجو
-            searchBar
-                .padding()
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .foregroundStyle(Color("Color"))
+                
+                TextField("جستجو در اشعار...", text: $poemModel.searchText)
+                    .textFieldStyle(.plain)
+                    .submitLabel(.search)
+                
+                if !poemModel.searchText.isEmpty {
+                    Button(action: {
+                        poemModel.searchText = ""
+                        poemModel.search()
+                    }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(Color("Color"))
+                    }
+                }
+            }
+            .padding()
+            .background(.background)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color("Color").opacity(0.2), lineWidth: 1)
+            )
+            .shadow(color: Color("AccentColor").opacity(0.1), radius: 2, x: 0, y: 1)
             
             // دکمه تغییر شاعر
             poetSwitchButton
@@ -32,38 +56,6 @@ struct SearchView: View {
         .navigationTitle("جستجو در اشعار")
     }
     
-    private var searchBar: some View {
-        HStack {
-            Image(systemName: "magnifyingglass")
-                .foregroundStyle(.secondary)
-            
-            TextField("جستجو در اشعار...", text: $poemModel.searchText)
-                .textFieldStyle(.plain)
-                .submitLabel(.search)
-                .onChange(of: poemModel.searchText) { oldValue, newValue in
-                    poemModel.search()
-                }
-            
-            if !poemModel.searchText.isEmpty {
-                Button(action: {
-                    poemModel.searchText = ""
-                    poemModel.search()
-                }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
-                }
-            }
-        }
-        .padding()
-        .background(.background)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.secondary.opacity(0.2), lineWidth: 1)
-        )
-        .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
-    }
-    
     private var poetSwitchButton: some View {
         Button(action: { poemModel.switchPoet() }) {
             HStack {
@@ -75,7 +67,7 @@ struct SearchView: View {
             .frame(maxWidth: .infinity)
             .frame(height: 44)
             .foregroundStyle(.white)
-            .background(Color.accentColor.gradient)
+            .background(Color("Color").gradient)
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
         .buttonStyle(.plain)
@@ -95,12 +87,13 @@ struct SearchView: View {
                 
                 if poemModel.isLoading {
                     ProgressView()
+                        .tint(Color("Color"))
                         .frame(height: 50)
                 }
             }
             .padding()
         }
-        .background(Color(white: 0.95))
+        .background(Color("Color").opacity(0.05))
     }
     
     private func poemCard(_ poem: Poem) -> some View {
@@ -108,7 +101,7 @@ struct SearchView: View {
             VStack(alignment: .center, spacing: 12) {
                 Text(poem.title)
                     .font(.headline)
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Color("Color"))
                     .lineLimit(1)
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: .infinity)
@@ -124,7 +117,7 @@ struct SearchView: View {
             .padding()
             .background(.background)
             .clipShape(RoundedRectangle(cornerRadius: 16))
-            .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 2)
+            .shadow(color: Color("AccentColor").opacity(0.1), radius: 3, x: 0, y: 2)
         }
         .buttonStyle(.plain)
     }
@@ -133,11 +126,11 @@ struct SearchView: View {
         VStack(spacing: 16) {
             Image(systemName: "text.magnifyingglass")
                 .font(.system(size: 48))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color("Color"))
             
             Text("جستجو در اشعار \(poemModel.selectedPoet.rawValue)")
                 .font(.headline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color("Color"))
             
             Text("برای یافتن اشعار مورد نظر خود، متنی را در کادر بالا وارد کنید")
                 .font(.subheadline)
@@ -146,7 +139,7 @@ struct SearchView: View {
                 .padding(.horizontal)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(white: 0.95))
+        .background(Color("Color").opacity(0.05))
     }
 }
 

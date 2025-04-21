@@ -23,8 +23,7 @@ struct HomeView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: 24, height: 24)
-                            .foregroundStyle(.tint)
-                            .symbolEffect(.bounce, value: settings.notificationsEnabled)
+                            .foregroundStyle(Color("Color"))
                     }
                     
                     Spacer()
@@ -32,6 +31,7 @@ struct HomeView: View {
                     Text("Divan")
                         .font(.title)
                         .fontWeight(.bold)
+                        .foregroundStyle(Color("Color"))
                 }
                 .padding(.vertical, 12)
                 
@@ -46,7 +46,7 @@ struct HomeView: View {
                                 title: poet.name,
                                 subtitle: poet.works.first ?? "",
                                 imageName: poet.imageName,
-                                color: .purple
+                                color: Color("Color")
                             )
                         }
                     }
@@ -70,14 +70,12 @@ struct PoetCardView: View {
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            // تصویر شاعر
             Image(imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: UIScreen.main.bounds.width / 2 - 30, height: UIScreen.main.bounds.width / 2 - 30)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
             
-            // گرادیانت برای خوانایی متن
             LinearGradient(
                 gradient: Gradient(colors: [.black.opacity(0.7), .clear]),
                 startPoint: .bottom,
@@ -86,7 +84,6 @@ struct PoetCardView: View {
             .frame(height: 45)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             
-            // نام شاعر
             Text(title)
                 .font(.headline)
                 .fontWeight(.bold)
@@ -94,15 +91,12 @@ struct PoetCardView: View {
                 .padding(.bottom, 8)
         }
         .frame(width: UIScreen.main.bounds.width / 2 - 30, height: UIScreen.main.bounds.width / 2 - 30)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(.background)
-        )
+        .background(.background)
         .shadow(
-            color: .black.opacity(0.3),    // سایه تیره‌تر
-            radius: 8,                      // شعاع بزرگتر
+            color: Color("AccentColor").opacity(0.3),
+            radius: 8,
             x: 0,
-            y: 4                           // آفست عمودی بیشتر
+            y: 4
         )
     }
 }

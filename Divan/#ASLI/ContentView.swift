@@ -25,7 +25,7 @@ struct ContentView: View {
                             Label("جستجو", systemImage: "magnifyingglass")
                         }
 
-                    FalHafezView()
+                    FalView()
                         .tabItem {
                             Label("فال", systemImage: "sparkles.square.filled.on.square")
                         }
@@ -44,7 +44,7 @@ struct ContentView: View {
         }
         .environmentObject(settings)
         .preferredColorScheme(settings.isDarkMode ? .dark : .light)
-        .tint(Color.purple)
+        .tint(Color("Color"))
     }
 }
 

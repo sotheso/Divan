@@ -47,6 +47,7 @@ struct DetailView: View {
                 Text(poem.title)
                     .font(.system(.title2, design: .serif))
                     .fontWeight(.bold)
+                    .foregroundStyle(Color("Color"))
                     .multilineTextAlignment(.center)
                     .padding(.top)
                 
@@ -58,7 +59,7 @@ struct DetailView: View {
                 if let vazn = poem.vazn {
                     Text(vazn)
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color("Color").opacity(0.8))
                 }
                 
                 // دکمه‌های عملیات

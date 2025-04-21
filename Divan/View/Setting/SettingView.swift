@@ -18,30 +18,36 @@ struct SettingView: View {
                 Section(header: Text("ظاهر برنامه")) {
                     Toggle(isOn: $appSettings.isDarkMode) {
                         Label("حالت تاریک", systemImage: "moon.fill")
+                            .foregroundStyle(Color("Color"))
                     }
                 }
                 
                 Section(header: Text("شخصی‌سازی")) {
                     NavigationLink(destination: MyFavoritePoemsView()) {
                         Label("غزل‌های مورد علاقه", systemImage: "heart.fill")
+                            .foregroundStyle(Color("Color"))
                     }
                     
                     NavigationLink(destination: FavoritePoetsView(poets: Poet.samplePoets)) {
                         Label("شاعران مورد علاقه", systemImage: "star.fill")
+                            .foregroundStyle(Color("Color"))
                     }
                 }
                 
                 Section(header: Text("ارتباط با ما")) {
                     NavigationLink(destination: AboutUsView()) {
                         Label("درباره ما", systemImage: "info.circle.fill")
+                            .foregroundStyle(Color("Color"))
                     }
                     
                     Link(destination: URL(string: "https://apps.apple.com/app/idXXXXXXXXXX?action=write-review")!) {
                         Label("امتیاز دادن به ما", systemImage: "star.fill")
+                            .foregroundStyle(Color("Color"))
                     }
                 }
             }
             .navigationTitle("تنظیمات")
+            .tint(Color("Color"))
             .overlay(
                 VStack {
                     Spacer()
@@ -58,7 +64,7 @@ struct FooterText: View {
         VStack(spacing: 4) {
             HStack(spacing: 4) {
                 Link("Sothesom", destination: URL(string: "https://t.me/sothesom")!)
-                    .foregroundColor(.blue)
+                    .foregroundColor(Color("Color"))
                     .font(.footnote)
                 
                 Text("ساخته شده توسط ")

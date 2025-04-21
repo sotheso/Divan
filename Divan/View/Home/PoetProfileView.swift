@@ -16,7 +16,8 @@ struct PoetProfileView: View {
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 0) {
+            VStack(spacing: 16) {
+                // Header Image & Info
                 GeometryReader { geometry in
                     ZStack(alignment: .top) {
                         // Background Image
@@ -28,37 +29,33 @@ struct PoetProfileView: View {
                             .clipped()
                             .ignoresSafeArea(.all, edges: .top)
                         
-                        VStack {
-                            // Custom Back Button
-                            HStack {
-                                Button(action: { dismiss() }) {
-                                    HStack {
-                                        Image(systemName: "chevron.backward")
-                                        Text("بازگشت")
-                                    }
-                                    .foregroundStyle(.white)
-                                    .padding(8)
-                                    .background(.black.opacity(0.3))
-                                    .clipShape(Capsule())
+                        // Back Button
+                        HStack {
+                            Button(action: { dismiss() }) {
+                                HStack {
+                                    Image(systemName: "chevron.backward")
+                                    Text("بازگشت")
                                 }
-                                Spacer()
+                                .foregroundStyle(.white)
+                                .padding(8)
+                                .background(Color("AccentColor").opacity(0.3))
+                                .clipShape(Capsule())
                             }
-                            .padding(.top, 50)
-                            .padding()
-                            
                             Spacer()
-                            
-                            // Gradient and Poet Info
-                            ZStack(alignment: .bottom) {
-                                // Gradient overlay
-                                LinearGradient(
-                                    gradient: Gradient(colors: [.black.opacity(0.7), .clear]),
-                                    startPoint: .bottom,
-                                    endPoint: .top
-                                )
-                                .frame(height: ((geometry.size.width * 7) / 5) * 4 / 7)
-                                
-                                // Poet info
+                        }
+                        .padding(.top, 50)
+                        .padding()
+                        
+                        // Bottom Gradient & Info
+                        VStack {
+                            Spacer()
+                            LinearGradient(
+                                gradient: Gradient(colors: [.black.opacity(0.7), .clear]),
+                                startPoint: .bottom,
+                                endPoint: .top
+                            )
+                            .frame(height: ((geometry.size.width * 7) / 5) * 4 / 7)
+                            .overlay(
                                 VStack(spacing: 8) {
                                     HStack {
                                         Button(action: {
@@ -67,8 +64,9 @@ struct PoetProfileView: View {
                                             showAlert = true
                                         }) {
                                             Image(systemName: favoritesManager.isFavorite(poet.id.uuidString) ? "star.fill" : "star")
-                                                .foregroundStyle(Color.yellow)
+                                                .foregroundStyle(favoritesManager.isFavorite(poet.id.uuidString) ? Color("Color") : .white)
                                                 .font(.title2)
+                                                .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
                                         }
                                         
                                         Text(poet.name)
@@ -81,8 +79,9 @@ struct PoetProfileView: View {
                                         .font(.subheadline)
                                         .foregroundStyle(.white.opacity(0.9))
                                 }
-                                .padding(.bottom, 20)
-                            }
+                                .padding(.bottom, 20),
+                                alignment: .bottom
+                            )
                         }
                     }
                 }
@@ -92,7 +91,7 @@ struct PoetProfileView: View {
                 VStack(alignment: .trailing, spacing: 12) {
                     Text("زندگینامه")
                         .font(.headline)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .foregroundStyle(Color("Color"))
                     
                     Text(poet.bio)
                         .font(.body)
@@ -100,38 +99,34 @@ struct PoetProfileView: View {
                         .lineSpacing(8)
                 }
                 .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(.background)
-                        .shadow(radius: 2)
-                )
+                .background(Color(.systemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .shadow(color: Color("AccentColor").opacity(0.1), radius: 2)
                 .padding(.horizontal)
-                .padding(.top, 8)
                 
                 // Works Section
                 VStack(alignment: .trailing, spacing: 12) {
                     Text("آثار")
                         .font(.headline)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .foregroundStyle(Color("Color"))
                     
                     ForEach(poet.works, id: \.self) { work in
                         HStack {
                             Text(work)
                                 .font(.body)
                             Image(systemName: "book.fill")
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(Color("Color"))
                         }
                         .frame(maxWidth: .infinity, alignment: .trailing)
                     }
                 }
                 .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(.background)
-                        .shadow(radius: 2)
-                )
+                .background(Color(.systemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .shadow(color: Color("AccentColor").opacity(0.1), radius: 2)
                 .padding(.horizontal)
             }
+            .padding(.bottom, 20)
         }
         .navigationBarHidden(true)
         .ignoresSafeArea(.all, edges: .top)
