@@ -20,16 +20,9 @@ struct FalView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // پس‌زمینه گرادیانت
-                LinearGradient(
-                    colors: [
-                        Color("Color").opacity(0.1),
-                        Color(.systemBackground)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .ignoresSafeArea()
+                // حذف گرادینت و استفاده از رنگ یکدست
+                Color("Color Back")
+                    .ignoresSafeArea()
                 
                 ScrollView {
                     VStack(spacing: 24) {
@@ -106,7 +99,7 @@ struct FalView: View {
                             .padding(24)
                             .background(
                                 RoundedRectangle(cornerRadius: 16)
-                                    .fill(Color(.systemBackground))
+                                    .fill(Color("Color Back"))
                                     .shadow(color: Color("AccentColor").opacity(0.2), radius: 8, x: 0, y: 4)
                             )
                             .padding(.horizontal)

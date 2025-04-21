@@ -96,10 +96,10 @@ struct DetailView: View {
                     
                     HStack {
                         Image(systemName: "play.circle")
-                            .foregroundStyle(Color.gray)
+                            .foregroundStyle(Color("Color"))
                         Text("خوانش غزل")
                             .font(.caption)
-                            .foregroundStyle(Color.gray)
+                            .foregroundStyle(Color("Color"))
                     }
                     
                     // دکمه‌های پادکست
@@ -152,13 +152,13 @@ struct DetailView: View {
             .padding(24)
             .background(
                 RoundedRectangle(cornerRadius: 16)
-                    .fill(Color(.systemBackground))
+                    .fill(Color("Color Back"))
                     .shadow(radius: 8, x: 0, y: 4)
             )
             .padding(.horizontal)
             .padding(.top, 100)
         }
-        .background(Color(.secondarySystemBackground))
+        .background(Color("Color Back"))
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -167,7 +167,7 @@ struct DetailView: View {
                         Image(systemName: "chevron.backward")
                         Text("برگشت")
                     }
-                    .foregroundStyle(.blue)
+                    .foregroundStyle(Color("Color"))
                 }
             }
         }

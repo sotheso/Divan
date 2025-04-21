@@ -99,7 +99,7 @@ struct PoetProfileView: View {
                         .lineSpacing(8)
                 }
                 .padding()
-                .background(Color(.systemBackground))
+                .background(Color("Color Back"))
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .shadow(color: Color("AccentColor").opacity(0.1), radius: 2)
                 .padding(.horizontal)
@@ -121,7 +121,7 @@ struct PoetProfileView: View {
                     }
                 }
                 .padding()
-                .background(Color(.systemBackground))
+                .background(Color("Color Back"))
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .shadow(color: Color("AccentColor").opacity(0.1), radius: 2)
                 .padding(.horizontal)

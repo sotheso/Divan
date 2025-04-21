@@ -54,6 +54,7 @@ struct HomeView: View {
             }
             .padding()
         }
+        .background(Color("Color Back"))
         .navigationTitle("دیوان شعر پارسی")
         .navigationBarTitleDisplayMode(.large)
         .sheet(isPresented: $showAlarmView) {
@@ -91,7 +92,7 @@ struct PoetCardView: View {
                 .padding(.bottom, 8)
         }
         .frame(width: UIScreen.main.bounds.width / 2 - 30, height: UIScreen.main.bounds.width / 2 - 30)
-        .background(.background)
+        .background(Color("Color Back"))
         .shadow(
             color: Color("AccentColor").opacity(0.3),
             radius: 8,

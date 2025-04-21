@@ -12,45 +12,52 @@ struct SearchView: View {
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        VStack(spacing: 0) {
-            // نوار جستجو
-            HStack {
-                Image(systemName: "magnifyingglass")
-                    .foregroundStyle(Color("Color"))
-                
-                TextField("جستجو در اشعار...", text: $poemModel.searchText)
-                    .textFieldStyle(.plain)
-                    .submitLabel(.search)
-                
-                if !poemModel.searchText.isEmpty {
-                    Button(action: {
-                        poemModel.searchText = ""
-                        poemModel.search()
-                    }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(Color("Color"))
+        ZStack {
+            // بکگراند اصلی
+            Color("Color Back")
+                .ignoresSafeArea()
+            
+            VStack(spacing: 0) {
+                // نوار جستجو
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundStyle(Color("Color"))
+                    
+                    TextField("جستجو در اشعار...", text: $poemModel.searchText)
+                        .textFieldStyle(.plain)
+                        .submitLabel(.search)
+                    
+                    if !poemModel.searchText.isEmpty {
+                        Button(action: {
+                            poemModel.searchText = ""
+                            poemModel.search()
+                        }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundStyle(Color("Color"))
+                        }
                     }
                 }
-            }
-            .padding()
-            .background(.background)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color("Color").opacity(0.2), lineWidth: 1)
-            )
-            .shadow(color: Color("AccentColor").opacity(0.1), radius: 2, x: 0, y: 1)
-            
-            // دکمه تغییر شاعر
-            poetSwitchButton
-                .padding(.horizontal)
-                .padding(.bottom)
-            
-            // نتایج جستجو
-            if poemModel.searchResults.isEmpty {
-                emptyStateView
-            } else {
-                searchResultsList
+                .padding()
+                .background(Color("Color Back"))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color("Color").opacity(0.2), lineWidth: 1)
+                )
+                .shadow(color: Color("AccentColor").opacity(0.1), radius: 2, x: 0, y: 1)
+                .padding()
+                
+                // دکمه تغییر شاعر
+                poetSwitchButton
+                    .padding(.horizontal)
+                    .padding(.bottom)
+                
+                // نتایج جستجو
+                if poemModel.searchResults.isEmpty {
+                    emptyStateView
+                } else {
+                    searchResultsList
+                }
             }
         }
         .navigationTitle("جستجو در اشعار")
@@ -93,7 +100,7 @@ struct SearchView: View {
             }
             .padding()
         }
-        .background(Color("Color").opacity(0.05))
+        .background(Color("Color Back"))
     }
     
     private func poemCard(_ poem: Poem) -> some View {
@@ -115,7 +122,7 @@ struct SearchView: View {
             }
             .frame(height: 120)
             .padding()
-            .background(.background)
+            .background(Color("Color Back"))
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .shadow(color: Color("AccentColor").opacity(0.1), radius: 3, x: 0, y: 2)
         }
@@ -139,7 +146,7 @@ struct SearchView: View {
                 .padding(.horizontal)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color("Color").opacity(0.05))
+        .background(Color("Color Back"))
     }
 }
 
