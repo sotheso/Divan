@@ -9,32 +9,84 @@ import SwiftUI
 
 struct PoetProfileView: View {
     let poet: Poet
+    @StateObject private var favoritesManager = FavoritePoetsManager()
+    @Environment(\.dismiss) private var dismiss
+    @State private var showAlert = false
+    @State private var isAddedToFavorites = false
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
-                // Profile Image and Name
-                VStack(spacing: 16) {
-                    Image(poet.imageName)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 120, height: 120)
-                        .clipShape(Circle())
-                        .overlay(
-                            Circle()
-                                .stroke(Color.primary.opacity(0.2), lineWidth: 2)
-                        )
-                        .shadow(radius: 5)
-                    
-                    Text(poet.name)
-                        .font(.title)
-                        .fontWeight(.bold)
-                    
-                    Text("\(poet.birthPlace) - \(poet.birthYear) تا \(poet.deathYear)")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+            VStack(spacing: 0) {
+                GeometryReader { geometry in
+                    ZStack(alignment: .top) {
+                        // Background Image
+                        Image(poet.imageName)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: geometry.size.width,
+                                   height: (geometry.size.width * 7) / 5)
+                            .clipped()
+                            .ignoresSafeArea(.all, edges: .top)
+                        
+                        VStack {
+                            // Custom Back Button
+                            HStack {
+                                Button(action: { dismiss() }) {
+                                    HStack {
+                                        Image(systemName: "chevron.backward")
+                                        Text("بازگشت")
+                                    }
+                                    .foregroundStyle(.white)
+                                    .padding(8)
+                                    .background(.black.opacity(0.3))
+                                    .clipShape(Capsule())
+                                }
+                                Spacer()
+                            }
+                            .padding(.top, 50)
+                            .padding()
+                            
+                            Spacer()
+                            
+                            // Gradient and Poet Info
+                            ZStack(alignment: .bottom) {
+                                // Gradient overlay
+                                LinearGradient(
+                                    gradient: Gradient(colors: [.black.opacity(0.7), .clear]),
+                                    startPoint: .bottom,
+                                    endPoint: .top
+                                )
+                                .frame(height: ((geometry.size.width * 7) / 5) * 4 / 7)
+                                
+                                // Poet info
+                                VStack(spacing: 8) {
+                                    HStack {
+                                        Button(action: {
+                                            isAddedToFavorites = !favoritesManager.isFavorite(poet.id.uuidString)
+                                            favoritesManager.toggleFavorite(poetId: poet.id.uuidString)
+                                            showAlert = true
+                                        }) {
+                                            Image(systemName: favoritesManager.isFavorite(poet.id.uuidString) ? "star.fill" : "star")
+                                                .foregroundStyle(Color.yellow)
+                                                .font(.title2)
+                                        }
+                                        
+                                        Text(poet.name)
+                                            .font(.title)
+                                            .fontWeight(.bold)
+                                            .foregroundStyle(.white)
+                                    }
+                                    
+                                    Text("\(poet.birthPlace) - \(poet.birthYear) تا \(poet.deathYear)")
+                                        .font(.subheadline)
+                                        .foregroundStyle(.white.opacity(0.9))
+                                }
+                                .padding(.bottom, 20)
+                            }
+                        }
+                    }
                 }
-                .padding(.top, 20)
+                .frame(height: UIScreen.main.bounds.width * 7 / 5)
                 
                 // Bio Section
                 VStack(alignment: .trailing, spacing: 12) {
@@ -54,6 +106,7 @@ struct PoetProfileView: View {
                         .shadow(radius: 2)
                 )
                 .padding(.horizontal)
+                .padding(.top, 8)
                 
                 // Works Section
                 VStack(alignment: .trailing, spacing: 12) {
@@ -79,10 +132,17 @@ struct PoetProfileView: View {
                 )
                 .padding(.horizontal)
             }
-            .padding(.bottom, 20)
         }
-        .navigationTitle("پروفایل شاعر")
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarHidden(true)
+        .ignoresSafeArea(.all, edges: .top)
+        .alert(isAddedToFavorites ? "اضافه شد به علاقه‌مندی‌ها" : "حذف شد از علاقه‌مندی‌ها", 
+               isPresented: $showAlert) {
+            Button("تایید", role: .cancel) { }
+        } message: {
+            Text(isAddedToFavorites ? 
+                "\(poet.name) به لیست شاعران مورد علاقه اضافه شد" :
+                "\(poet.name) از لیست شاعران مورد علاقه حذف شد")
+        }
     }
 }
 

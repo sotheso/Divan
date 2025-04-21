@@ -25,6 +25,10 @@ struct SettingView: View {
                     NavigationLink(destination: MyFavoritePoemsView()) {
                         Label("غزل‌های مورد علاقه", systemImage: "heart.fill")
                     }
+                    
+                    NavigationLink(destination: FavoritePoetsView(poets: Poet.samplePoets)) {
+                        Label("شاعران مورد علاقه", systemImage: "star.fill")
+                    }
                 }
                 
                 Section(header: Text("ارتباط با ما")) {

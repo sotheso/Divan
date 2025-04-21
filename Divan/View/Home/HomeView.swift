@@ -69,35 +69,40 @@ struct PoetCardView: View {
     let color: Color
     
     var body: some View {
-        VStack(alignment: .trailing) {
+        ZStack(alignment: .bottom) {
+            // تصویر شاعر
             Image(imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(height: 120)
+                .frame(width: UIScreen.main.bounds.width / 2 - 30, height: UIScreen.main.bounds.width / 2 - 30)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(color.opacity(0.3), lineWidth: 1)
-                )
             
-            VStack(alignment: .trailing, spacing: 4) {
-                Text(title)
-                    .font(.headline)
-                    .foregroundStyle(.primary)
-                
-                Text(subtitle)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
-            .padding(.vertical, 8)
-            .padding(.horizontal)
+            // گرادیانت برای خوانایی متن
+            LinearGradient(
+                gradient: Gradient(colors: [.black.opacity(0.7), .clear]),
+                startPoint: .bottom,
+                endPoint: .top
+            )
+            .frame(height: 45)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
             
+            // نام شاعر
+            Text(title)
+                .font(.headline)
+                .fontWeight(.bold)
+                .foregroundStyle(.white)
+                .padding(.bottom, 8)
         }
-        .frame(maxWidth: .infinity)
+        .frame(width: UIScreen.main.bounds.width / 2 - 30, height: UIScreen.main.bounds.width / 2 - 30)
         .background(
-            RoundedRectangle(cornerRadius: 20)
+            RoundedRectangle(cornerRadius: 16)
                 .fill(.background)
-                .shadow(radius: 2, x: 0, y: 2)
+        )
+        .shadow(
+            color: .black.opacity(0.3),    // سایه تیره‌تر
+            radius: 8,                      // شعاع بزرگتر
+            x: 0,
+            y: 4                           // آفست عمودی بیشتر
         )
     }
 }
