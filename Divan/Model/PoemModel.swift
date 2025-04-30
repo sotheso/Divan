@@ -14,6 +14,32 @@ struct Poem: Identifiable {
 enum PoetType: String {
     case hafez = "حافظ"
     case babaTaher = "باباطاهر"
+    case saadi = "سعدی"
+    case molana = "مولانا"
+}
+
+// Add a new enum for poem categories
+enum PoemCategory: String, CaseIterable, Identifiable {
+    case hafezGhazal
+    case hafezGhete
+    case hafezRobaee
+    case saadiGhazal
+    case saadiBostan
+    case molanaRobaee
+    case babaTaherDoBeyti
+    // Add more as needed
+    var id: String { self.rawValue }
+    var displayName: String {
+        switch self {
+        case .hafezGhazal: return "غزلیات حافظ"
+        case .hafezGhete: return "قطعات حافظ"
+        case .hafezRobaee: return "رباعیات حافظ"
+        case .saadiGhazal: return "غزلیات سعدی"
+        case .saadiBostan: return "بوستان سعدی"
+        case .molanaRobaee: return "رباعیات مولانا"
+        case .babaTaherDoBeyti: return "دوبیتی‌های باباطاهر"
+        }
+    }
 }
 
 class PoemModel: ObservableObject {
@@ -22,6 +48,7 @@ class PoemModel: ObservableObject {
     @Published var searchResults: [Poem] = []
     @Published var isLoading = false
     @Published var currentPage = 1
+    @Published var selectedCategory: PoemCategory = .hafezGhazal
     
     private var allPoems: [Poem] = []
     private let itemsPerPage = 10
@@ -30,11 +57,21 @@ class PoemModel: ObservableObject {
         loadPoems()
     }
     
-    private func loadPoems() {
-        switch selectedPoet {
-        case .hafez:
+    func loadPoems() {
+        switch selectedCategory {
+        case .hafezGhazal:
             allPoems = readHafezData()
-        case .babaTaher:
+        case .hafezGhete:
+            allPoems = readHafezGheteData()
+        case .hafezRobaee:
+            allPoems = readHafezRobaeeData()
+        case .saadiGhazal:
+            allPoems = readSaadiQazalData()
+        case .saadiBostan:
+            allPoems = readSaadiBostanData()
+        case .molanaRobaee:
+            allPoems = readMolanaRobaeeData()
+        case .babaTaherDoBeyti:
             allPoems = readBabaTaherData()
         }
         search()
@@ -132,6 +169,116 @@ class PoemModel: ObservableObject {
                 content: content,
                 vazn: item["vazn"] as? String,
                 poet: .babaTaher,
+                link1: item["link1"] as? String ?? "",
+                link2: item["link2"] as? String ?? ""
+            )
+        }
+    }
+    
+    func readHafezGheteData() -> [Poem] {
+        guard let url = Bundle.main.url(forResource: "HafezGhete", withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]] else {
+            return []
+        }
+        return json.compactMap { item in
+            guard let title = item["title"] as? String,
+                  let content = item["content"] as? String else {
+                return nil
+            }
+            return Poem(
+                title: title,
+                content: content,
+                vazn: item["vazn"] as? String,
+                poet: .hafez,
+                link1: item["link1"] as? String ?? "",
+                link2: item["link2"] as? String ?? ""
+            )
+        }
+    }
+    
+    func readHafezRobaeeData() -> [Poem] {
+        guard let url = Bundle.main.url(forResource: "HafezRobaee", withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]] else {
+            return []
+        }
+        return json.compactMap { item in
+            guard let title = item["title"] as? String,
+                  let content = item["content"] as? String else {
+                return nil
+            }
+            return Poem(
+                title: title,
+                content: content,
+                vazn: item["vazn"] as? String,
+                poet: .hafez,
+                link1: item["link1"] as? String ?? "",
+                link2: item["link2"] as? String ?? ""
+            )
+        }
+    }
+    
+    func readSaadiQazalData() -> [Poem] {
+        guard let url = Bundle.main.url(forResource: "SaadiQazal", withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]] else {
+            return []
+        }
+        return json.compactMap { item in
+            guard let title = item["title"] as? String,
+                  let content = item["content"] as? String else {
+                return nil
+            }
+            return Poem(
+                title: title,
+                content: content,
+                vazn: item["vazn"] as? String,
+                poet: .saadi,
+                link1: item["link1"] as? String ?? "",
+                link2: item["link2"] as? String ?? ""
+            )
+        }
+    }
+    
+    func readSaadiBostanData() -> [Poem] {
+        guard let url = Bundle.main.url(forResource: "Saad‌iBostan", withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]] else {
+            return []
+        }
+        return json.compactMap { item in
+            guard let title = item["title"] as? String,
+                  let content = item["content"] as? String else {
+                return nil
+            }
+            return Poem(
+                title: title,
+                content: content,
+                vazn: item["vazn"] as? String,
+                poet: .saadi,
+                link1: item["link1"] as? String ?? "",
+                link2: item["link2"] as? String ?? ""
+            )
+        }
+    }
+    
+    func readMolanaRobaeeData() -> [Poem] {
+        guard let url = Bundle.main.url(forResource: "DivnanShamsRobaee", withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]] else {
+            return []
+        }
+        return json.compactMap { item in
+            guard let title = item["title"] as? String,
+                  let content = item["content"] as? String else {
+                return nil
+            }
+            return Poem(
+                title: title,
+                content: content,
+                vazn: item["vazn"] as? String,
+                poet: .molana,
                 link1: item["link1"] as? String ?? "",
                 link2: item["link2"] as? String ?? ""
             )

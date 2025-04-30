@@ -129,21 +129,22 @@ struct FalView: View {
                                             }
                                         }
                                     }) {
-                                        Label("فال \(viewModel.selectedPoet.rawValue)", systemImage: "sparkles")
+                                        Label("فال " + viewModel.selectedCategory.displayName, systemImage: "sparkles")
                                             .frame(maxWidth: .infinity)
                                     }
                                     .buttonStyle(.borderedProminent)
                                     .tint(Color("Color"))
                                     .controlSize(.large)
                                     
-                                    Button(action: { viewModel.switchPoet() }) {
-                                        Label("تغییر شاعر",
-                                              systemImage: "arrow.triangle.2.circlepath")
-                                        .frame(maxWidth: .infinity)
+                                    Picker(selection: $viewModel.selectedCategory, label: Label("انتخاب نوع شعر", systemImage: "arrow.triangle.2.circlepath").frame(maxWidth: .infinity)) {
+                                        ForEach(PoemCategory.allCases) { category in
+                                            Text(category.displayName).tag(category)
+                                        }
                                     }
-                                    .buttonStyle(.bordered)
-                                    .tint(Color("Color"))
-                                    .controlSize(.large)
+                                    .pickerStyle(MenuPickerStyle())
+                                    .frame(maxWidth: .infinity)
+                                    .background(Color("Color Back").opacity(0.8))
+                                    .cornerRadius(8)
                                 }
                             }
                             .padding(.top, 200)
@@ -155,7 +156,6 @@ struct FalView: View {
                 
                 PageTurnAnimation(isAnimating: $isAnimating)
             }
-            .navigationTitle("فال \(viewModel.selectedPoet.rawValue)")
             .sheet(isPresented: $showSafari) {
                 if let url = selectedURL {
                     safariOpen(url: url)
