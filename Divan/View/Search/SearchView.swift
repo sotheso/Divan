@@ -61,14 +61,21 @@ struct SearchView: View {
             }
         }
         .navigationTitle("جستجو در اشعار")
+        .onChange(of: poemModel.selectedCategory) {
+            poemModel.searchText = ""
+            poemModel.loadPoems()
+        }
+        .onChange(of: poemModel.searchText) {
+            poemModel.search()
+        }
     }
     
     private var poetSwitchButton: some View {
-        Button(action: { poemModel.switchPoet() }) {
+        Picker(selection: $poemModel.selectedCategory, label:
             HStack {
                 Image(systemName: "arrow.triangle.2.circlepath")
                     .imageScale(.medium)
-                Text("تغییر به \(poemModel.selectedPoet == .hafez ? "باباطاهر" : "حافظ")")
+                Text("انتخاب نوع شعر")
                     .fontWeight(.medium)
             }
             .frame(maxWidth: .infinity)
@@ -76,8 +83,12 @@ struct SearchView: View {
             .foregroundStyle(.white)
             .background(Color("Color").gradient)
             .clipShape(RoundedRectangle(cornerRadius: 12))
+        ) {
+            ForEach(PoemCategory.allCases) { category in
+                Text(category.displayName).tag(category)
+            }
         }
-        .buttonStyle(.plain)
+        .pickerStyle(MenuPickerStyle())
     }
     
     private var searchResultsList: some View {
@@ -135,7 +146,7 @@ struct SearchView: View {
                 .font(.system(size: 48))
                 .foregroundStyle(Color("Color"))
             
-            Text("جستجو در اشعار \(poemModel.selectedPoet.rawValue)")
+            Text("جستجو در اشعار " + poemModel.selectedCategory.displayName)
                 .font(.headline)
                 .foregroundStyle(Color("Color"))
             

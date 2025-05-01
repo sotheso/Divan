@@ -27,6 +27,7 @@ enum PoemCategory: String, CaseIterable, Identifiable {
     case saadiBostan
     case molanaRobaee
     case babaTaherDoBeyti
+    case masnavi
     // Add more as needed
     var id: String { self.rawValue }
     var displayName: String {
@@ -38,6 +39,7 @@ enum PoemCategory: String, CaseIterable, Identifiable {
         case .saadiBostan: return "بوستان سعدی"
         case .molanaRobaee: return "رباعیات مولانا"
         case .babaTaherDoBeyti: return "دوبیتی‌های باباطاهر"
+        case .masnavi: return "مثنوی معنوی"
         }
     }
 }
@@ -73,6 +75,8 @@ class PoemModel: ObservableObject {
             allPoems = readMolanaRobaeeData()
         case .babaTaherDoBeyti:
             allPoems = readBabaTaherData()
+        case .masnavi:
+            allPoems = readMasnaviData()
         }
         search()
     }
@@ -265,6 +269,28 @@ class PoemModel: ObservableObject {
     
     func readMolanaRobaeeData() -> [Poem] {
         guard let url = Bundle.main.url(forResource: "DivnanShamsRobaee", withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]] else {
+            return []
+        }
+        return json.compactMap { item in
+            guard let title = item["title"] as? String,
+                  let content = item["content"] as? String else {
+                return nil
+            }
+            return Poem(
+                title: title,
+                content: content,
+                vazn: item["vazn"] as? String,
+                poet: .molana,
+                link1: item["link1"] as? String ?? "",
+                link2: item["link2"] as? String ?? ""
+            )
+        }
+    }
+    
+    func readMasnaviData() -> [Poem] {
+        guard let url = Bundle.main.url(forResource: "masnavi", withExtension: "json"),
               let data = try? Data(contentsOf: url),
               let json = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]] else {
             return []
