@@ -17,7 +17,7 @@ class FalHafezViewModel: ObservableObject {
     func loadPoems() {
         model.selectedCategory = selectedCategory
         model.loadPoems()
-        poems = model.searchResults
+        poems = model.allPoems
     }
     
     func getRandomPoem() {

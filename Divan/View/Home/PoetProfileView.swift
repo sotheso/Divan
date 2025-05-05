@@ -125,6 +125,10 @@ struct PoetProfileView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .shadow(color: Color("AccentColor").opacity(0.1), radius: 2)
                 .padding(.horizontal)
+                
+                // Books Section
+                BookListView(poet: poet)
+                    .padding(.horizontal)
             }
             .padding(.bottom, 20)
         }

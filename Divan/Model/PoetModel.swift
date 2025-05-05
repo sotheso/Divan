@@ -9,6 +9,7 @@ struct Poet: Identifiable {
     let birthYear: Int
     let deathYear: Int
     let birthPlace: String
+    let type: PoetType
     
     static let samplePoets: [Poet] = [
         Poet(
@@ -18,7 +19,8 @@ struct Poet: Identifiable {
             works: ["غزلیات", "قصاید", "مثنویات", "رباعیات"],
             birthYear: 726,
             deathYear: 792,
-            birthPlace: "شیراز"
+            birthPlace: "شیراز",
+            type: .hafez
         ),
         Poet(
             name: "سعدی",
@@ -27,7 +29,8 @@ struct Poet: Identifiable {
             works: ["بوستان", "گلستان", "غزلیات", "قصاید"],
             birthYear: 606,
             deathYear: 690,
-            birthPlace: "شیراز"
+            birthPlace: "شیراز",
+            type: .saadi
         ),
         Poet(
             name: "باباطاهر",
@@ -36,7 +39,8 @@ struct Poet: Identifiable {
             works: ["دوبیتی‌ها", "کلمات قصار"],
             birthYear: 1000,
             deathYear: 1055,
-            birthPlace: "همدان"
+            birthPlace: "همدان",
+            type: .babaTaher
         ),
         Poet(
             name: "مولانا",
@@ -45,7 +49,8 @@ struct Poet: Identifiable {
             works: ["مثنوی معنوی", "دیوان شمس", "فیه ما فیه", "مجالس سبعه"],
             birthYear: 604,
             deathYear: 672,
-            birthPlace: "بلخ"
+            birthPlace: "بلخ",
+            type: .molana
         )
     ]
 } 

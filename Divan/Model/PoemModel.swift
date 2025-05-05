@@ -42,6 +42,19 @@ enum PoemCategory: String, CaseIterable, Identifiable {
         case .masnavi: return "مثنوی معنوی"
         }
     }
+    
+    var poetType: PoetType {
+        switch self {
+        case .hafezGhazal, .hafezGhete, .hafezRobaee:
+            return .hafez
+        case .saadiGhazal, .saadiBostan:
+            return .saadi
+        case .molanaRobaee, .masnavi:
+            return .molana
+        case .babaTaherDoBeyti:
+            return .babaTaher
+        }
+    }
 }
 
 class PoemModel: ObservableObject {
@@ -52,7 +65,7 @@ class PoemModel: ObservableObject {
     @Published var currentPage = 1
     @Published var selectedCategory: PoemCategory = .hafezGhazal
     
-    private var allPoems: [Poem] = []
+    var allPoems: [Poem] = []
     private let itemsPerPage = 10
     
     init() {
