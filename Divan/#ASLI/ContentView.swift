@@ -35,6 +35,7 @@ struct ContentView: View {
                             Label("تنظیمات", systemImage: "gearshape.fill")
                         }
                 }
+                .ignoresSafeArea(.container, edges: [.leading, .trailing])
                 .background(
                     Color.clear
                         .background(.ultraThinMaterial)

@@ -30,12 +30,13 @@ struct BookListView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 0) {
             Text(poet == nil ? "کتاب‌های پیشنهادی" : "کتاب‌های \(poet!.name)")
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundStyle(Color("Color"))
                 .padding(.horizontal)
+                .padding(.top, 20)
             
             if filteredBooks.isEmpty {
                 Text("هیچ کتابی یافت نشد")
@@ -43,13 +44,13 @@ struct BookListView: View {
                     .padding()
             } else {
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 16) {
+                    HStack(spacing: 8) {
                         ForEach(filteredBooks) { book in
                             BookCardView(book: book)
                         }
                     }
-                    .padding(.horizontal)
                 }
+                .ignoresSafeArea(.container, edges: .horizontal)
             }
         }
         .padding(.top, 20)

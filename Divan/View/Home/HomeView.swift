@@ -12,7 +12,7 @@ struct HomeView: View {
     @State private var showAlarmView = false
     
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             VStack(spacing: 16) {
                 // Logo and Title Section
                 HStack(spacing: 12) {
@@ -63,6 +63,7 @@ struct HomeView: View {
         .sheet(isPresented: $showAlarmView) {
             AlarmView()
         }
+        .ignoresSafeArea(.container, edges: .horizontal)
     }
 }
 
