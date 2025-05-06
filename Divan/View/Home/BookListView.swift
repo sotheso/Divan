@@ -61,48 +61,51 @@ struct BookCardView: View {
     let book: Book
     
     var body: some View {
-        ZStack(alignment: .center) {
-            // Book Image with fallback
-            if let uiImage = UIImage(named: book.imageName) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 160, height: 240)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-            } else {
-                Image("‌Book1")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 160, height: 240)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-            }
-            
-            // Text
-            VStack(spacing: 4) {
-                Text(book.title)
-                    .font(.headline)
-                    .fontWeight(.medium)
-                    .foregroundStyle(.white)
-                    .lineLimit(1)
-                    .shadow(color: .black.opacity(0.5), radius: 2, x: 0, y: 1)
+        NavigationLink(destination: SearchView(selectedCategory: book.category)) {
+            ZStack(alignment: .center) {
+                // Book Image with fallback
+                if let uiImage = UIImage(named: book.imageName) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 160, height: 240)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                } else {
+                    Image("‌Book1")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 160, height: 240)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
                 
-                Text(book.author)
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.9))
-                    .lineLimit(1)
-                    .shadow(color: .black.opacity(0.5), radius: 2, x: 0, y: 1)
+                // Text
+                VStack(spacing: 4) {
+                    Text(book.title)
+                        .font(.headline)
+                        .fontWeight(.medium)
+                        .foregroundStyle(.white)
+                        .lineLimit(1)
+                        .shadow(color: .black.opacity(0.5), radius: 2, x: 0, y: 1)
+                    
+                    Text(book.author)
+                        .font(.subheadline)
+                        .foregroundStyle(.white.opacity(0.9))
+                        .lineLimit(1)
+                        .shadow(color: .black.opacity(0.5), radius: 2, x: 0, y: 1)
+                }
+                .padding(.horizontal, 8)
+                .padding(.bottom, 8)
             }
-            .padding(.horizontal, 8)
-            .padding(.bottom, 8)
+            .frame(width: 160, height: 240)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .shadow(
+                color: Color("AccentColor").opacity(0.3),
+                radius: 8,
+                x: 0,
+                y: 4
+            )
         }
-        .frame(width: 160, height: 240)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .shadow(
-            color: Color("AccentColor").opacity(0.3),
-            radius: 8,
-            x: 0,
-            y: 4
-        )
+        .buttonStyle(.plain)
     }
 }
 

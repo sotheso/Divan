@@ -10,6 +10,12 @@ import SwiftUI
 struct SearchView: View {
     @StateObject private var poemModel = PoemModel()
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.dismiss) private var dismiss
+    var selectedCategory: PoemCategory?
+    
+    init(selectedCategory: PoemCategory? = nil) {
+        self.selectedCategory = selectedCategory
+    }
     
     var body: some View {
         ZStack {
@@ -48,9 +54,11 @@ struct SearchView: View {
                 .padding()
                 
                 // دکمه تغییر شاعر
-                poetSwitchButton
-                    .padding(.horizontal)
-                    .padding(.bottom)
+                if selectedCategory == nil {
+                    poetSwitchButton
+                        .padding(.horizontal)
+                        .padding(.bottom)
+                }
                 
                 // نتایج جستجو
                 if poemModel.searchResults.isEmpty {
@@ -60,7 +68,32 @@ struct SearchView: View {
                 }
             }
         }
-        .navigationTitle("جستجو در اشعار")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text(selectedCategory?.displayName ?? "جستجو در اشعار")
+                    .font(.headline)
+                    .foregroundStyle(Color("Color"))
+            }
+            
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                        Text("بازگشت")
+                    }
+                }
+            }
+        }
+        .onAppear {
+            if let category = selectedCategory {
+                poemModel.selectedCategory = category
+                poemModel.loadPoems()
+            }
+        }
         .onChange(of: poemModel.selectedCategory) {
             poemModel.searchText = ""
             poemModel.loadPoems()
@@ -148,7 +181,7 @@ struct SearchView: View {
                 .font(.system(size: 48))
                 .foregroundStyle(Color("Color"))
             
-            Text("جستجو در اشعار " + poemModel.selectedCategory.displayName)
+            Text("جستجو در اشعار " + (selectedCategory?.displayName ?? poemModel.selectedCategory.displayName))
                 .font(.headline)
                 .foregroundStyle(Color("Color"))
             
