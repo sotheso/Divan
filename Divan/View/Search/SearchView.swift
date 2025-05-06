@@ -44,7 +44,7 @@ struct SearchView: View {
                     RoundedRectangle(cornerRadius: 12)
                         .stroke(Color("Color").opacity(0.2), lineWidth: 1)
                 )
-                .shadow(color: Color("AccentColor").opacity(0.1), radius: 2, x: 0, y: 1)
+                .shadow(color: Color("AccentColor").opacity(0.3), radius: 4, x: 0, y: 2)
                 .padding()
                 
                 // دکمه تغییر شاعر
@@ -119,7 +119,7 @@ struct SearchView: View {
             VStack(alignment: .center, spacing: 12) {
                 Text(poem.title)
                     .font(.headline)
-                    .foregroundStyle(Color("Color"))
+                    .foregroundStyle(colorScheme == .dark ? .black : .white)
                     .lineLimit(1)
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: .infinity)
@@ -127,15 +127,17 @@ struct SearchView: View {
                 Text(poem.content)
                     .font(.body)
                     .lineLimit(3)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(colorScheme == .dark ? .black.opacity(0.8) : .white.opacity(0.8))
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: .infinity)
             }
             .frame(height: 120)
             .padding()
-            .background(Color("Color Back"))
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(colorScheme == .dark ? .white : Color("Color"))
+            )
             .clipShape(RoundedRectangle(cornerRadius: 16))
-            .shadow(color: Color("AccentColor").opacity(0.1), radius: 3, x: 0, y: 2)
         }
         .buttonStyle(.plain)
     }
