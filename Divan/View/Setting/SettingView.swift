@@ -30,12 +30,12 @@ struct SettingView: View {
                     
                     Section(header: Text("شخصی‌سازی")) {
                         NavigationLink(destination: MyFavoritePoemsView()) {
-                            Label("غزل‌های مورد علاقه", systemImage: "heart.fill")
+                            Label("شعرهای ذخیره شده", systemImage: "bookmark.fill")
                                 .foregroundStyle(Color("Color"))
                         }
                         
                         NavigationLink(destination: FavoritePoetsView(poets: Poet.samplePoets)) {
-                            Label("شاعران مورد علاقه", systemImage: "star.fill")
+                            Label("شاعران مورد علاقه", systemImage: "heart.fill")
                                 .foregroundStyle(Color("Color"))
                         }
                     }

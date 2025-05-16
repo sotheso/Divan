@@ -82,7 +82,7 @@ struct MyFavoritePoemsView: View {
                 favoritesList
             }
         }
-        .navigationTitle("غزل‌های مورد علاقه")
+        .navigationTitle("شعرهای ذخیره شده")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             favoriteManager.loadFavorites()
@@ -94,23 +94,29 @@ struct MyFavoritePoemsView: View {
         List {
             ForEach(filteredPoems) { poem in
                 Button {
-                    let detailView = DetailView(
-                        poem: Poem(
-                            title: poem.title,
-                            content: poem.content,
-                            vazn: poem.vazn,
-                            poet: PoetType(rawValue: poem.poet) ?? .hafez,
-                            link1: poem.link1 ?? "",
-                            link2: poem.link2 ?? ""
-                        ),
-                        hidesFavoriteButton: true
-                    )
+                    let detailView = NavigationStack {
+                        DetailView(
+                            poem: Poem(
+                                title: poem.title,
+                                content: poem.content,
+                                vazn: poem.vazn,
+                                poet: PoetType(rawValue: poem.poet) ?? .hafez,
+                                link1: poem.link1 ?? "",
+                                link2: poem.link2 ?? ""
+                            ),
+                            hidesFavoriteButton: true
+                        )
+                        .navigationBarBackButtonHidden(false)
+                    }
+                    
                     if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                        let window = windowScene.windows.first,
                        let rootViewController = window.rootViewController {
                         let hostingController = UIHostingController(rootView: detailView)
+                        hostingController.modalPresentationStyle = .fullScreen
                         rootViewController.present(hostingController, animated: true)
                     }
+                    
                 } label: {
                     FavoritePoemCard(poem: poem)
                 }
@@ -169,7 +175,7 @@ struct FilterChip: View {
                 .font(.system(size: 14, weight: .medium))
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
-                .background(isSelected ? Color.blue : Color.gray.opacity(0.2))
+                .background(isSelected ? Color("Color") : Color.gray.opacity(0.2))
                 .foregroundColor(isSelected ? .white : .primary)
                 .clipShape(Capsule())
                 .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
