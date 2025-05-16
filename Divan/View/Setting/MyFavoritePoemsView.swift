@@ -39,10 +39,44 @@ private struct FavoritePoemCard: View {
 struct MyFavoritePoemsView: View {
     @StateObject private var favoriteManager = MyFavoritePoemManager.shared
     @Environment(\.colorScheme) var colorScheme
+    @State private var selectedPoet: String? = nil
+    
+    var filteredPoems: [MyFavoritePoem] {
+        if let poet = selectedPoet {
+            return favoriteManager.favoritePoems.filter { $0.poet == poet }
+        }
+        return favoriteManager.favoritePoems
+    }
+    
+    var uniquePoets: [String] {
+        Array(Set(favoriteManager.favoritePoems.map { $0.poet })).sorted()
+    }
     
     var body: some View {
         VStack(spacing: 0) {
-            if favoriteManager.favoritePoems.isEmpty {
+            // فیلتر شاعر
+            if !favoriteManager.favoritePoems.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(uniquePoets, id: \.self) { poet in
+                            FilterChip(title: poet, isSelected: selectedPoet == poet) {
+                                selectedPoet = poet
+                            }
+                        }
+                        
+                        FilterChip(title: "همه", isSelected: selectedPoet == nil) {
+                            selectedPoet = nil
+                        }
+                    }
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                }
+                .background(Color(.secondarySystemGroupedBackground))
+                .frame(height: 50)
+            }
+            
+            if filteredPoems.isEmpty {
                 emptyStateView
             } else {
                 favoritesList
@@ -58,7 +92,7 @@ struct MyFavoritePoemsView: View {
     
     private var favoritesList: some View {
         List {
-            ForEach(favoriteManager.favoritePoems) { poem in
+            ForEach(filteredPoems) { poem in
                 Button {
                     let detailView = DetailView(
                         poem: Poem(
@@ -86,7 +120,7 @@ struct MyFavoritePoemsView: View {
                 .listRowSeparator(.hidden)
                 .padding(.horizontal)
                 .padding(.vertical, 4)
-                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                .swipeActions(edge: .leading, allowsFullSwipe: true) {
                     Button(role: .destructive) {
                         withAnimation {
                             favoriteManager.removeFavorite(id: poem.id)
@@ -120,6 +154,26 @@ struct MyFavoritePoemsView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.systemGroupedBackground))
+    }
+}
+
+// کامپوننت فیلتر
+struct FilterChip: View {
+    let title: String
+    let isSelected: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(.system(size: 14, weight: .medium))
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .background(isSelected ? Color.blue : Color.gray.opacity(0.2))
+                .foregroundColor(isSelected ? .white : .primary)
+                .clipShape(Capsule())
+                .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+        }
     }
 }
 
