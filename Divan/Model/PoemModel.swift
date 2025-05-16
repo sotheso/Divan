@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-struct Poem: Identifiable {
+struct Poem: Identifiable, Equatable {
     let id = UUID()
     let title: String
     let content: String
@@ -9,6 +9,16 @@ struct Poem: Identifiable {
     let poet: PoetType
     let link1: String
     let link2: String
+    
+    static func == (lhs: Poem, rhs: Poem) -> Bool {
+        lhs.id == rhs.id &&
+        lhs.title == rhs.title &&
+        lhs.content == rhs.content &&
+        lhs.vazn == rhs.vazn &&
+        lhs.poet == rhs.poet &&
+        lhs.link1 == rhs.link1 &&
+        lhs.link2 == rhs.link2
+    }
 }
 
 enum PoetType: String {
