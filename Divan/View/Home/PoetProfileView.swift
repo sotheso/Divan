@@ -88,38 +88,18 @@ struct PoetProfileView: View {
                 .frame(height: UIScreen.main.bounds.width * 7 / 5)
                 
                 // Bio Section
-                VStack(alignment: .trailing, spacing: 12) {
-                    Text("زندگینامه")
+                VStack(alignment: .center, spacing: 12) {
+                    Text("Biography / زندگینامه")
                         .font(.headline)
                         .foregroundStyle(Color("Color"))
+                    
                     
                     Text(poet.bio)
                         .font(.body)
-                        .multilineTextAlignment(.trailing)
+                        .multilineTextAlignment(.center)
                         .lineSpacing(8)
                 }
-                .padding()
-                .background(Color("Color Back"))
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .shadow(color: Color("AccentColor").opacity(0.1), radius: 2)
-                .padding(.horizontal)
                 
-                // Works Section
-                VStack(alignment: .trailing, spacing: 12) {
-                    Text("آثار")
-                        .font(.headline)
-                        .foregroundStyle(Color("Color"))
-                    
-                    ForEach(poet.works, id: \.self) { work in
-                        HStack {
-                            Text(work)
-                                .font(.body)
-                            Image(systemName: "book.fill")
-                                .foregroundStyle(Color("Color"))
-                        }
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                    }
-                }
                 .padding()
                 .background(Color("Color Back"))
                 .clipShape(RoundedRectangle(cornerRadius: 16))
@@ -134,13 +114,13 @@ struct PoetProfileView: View {
         }
         .navigationBarHidden(true)
         .ignoresSafeArea(.all, edges: .top)
-        .alert(isAddedToFavorites ? "اضافه شد به علاقه‌مندی‌ها" : "حذف شد از علاقه‌مندی‌ها", 
+        .alert(isAddedToFavorites ? "Added to Favorites" : "Removed from Favorites",
                isPresented: $showAlert) {
-            Button("تایید", role: .cancel) { }
+            Button("OK", role: .cancel) { }
         } message: {
-            Text(isAddedToFavorites ? 
-                "\(poet.name) به لیست شاعران مورد علاقه اضافه شد" :
-                "\(poet.name) از لیست شاعران مورد علاقه حذف شد")
+            Text(isAddedToFavorites ?
+                 "\(poet.name) has been added to your favorite poets." :
+                    "\(poet.name) has been removed from your favorite poets.")
         }
     }
 }

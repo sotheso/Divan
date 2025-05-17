@@ -33,13 +33,15 @@ struct HomeView: View {
                         .fontWeight(.bold)
                         .foregroundStyle(Color("Color"))
                 }
-                .padding(.vertical, 12)
+//                .padding(.vertical, 12)
+                .padding(.bottom)
+                .padding(.horizontal)
                 
                 // Poets Grid
                 LazyVGrid(columns: [
                     GridItem(.flexible()),
                     GridItem(.flexible())
-                ], spacing: 26) {
+                ], spacing: 18) {
                     ForEach(Poet.samplePoets) { poet in
                         NavigationLink(destination: PoetProfileView(poet: poet)) {
                             PoetCardView(
@@ -55,15 +57,15 @@ struct HomeView: View {
                 // Books Section
                 BookListView()
             }
-            .padding()
+            .padding(.vertical)
         }
         .background(Color("Color Back"))
+        .ignoresSafeArea(.container, edges: [.leading, .trailing])
         .navigationTitle("دیوان شعر پارسی")
         .navigationBarTitleDisplayMode(.large)
         .sheet(isPresented: $showAlarmView) {
             AlarmView()
         }
-        .ignoresSafeArea(.container, edges: .horizontal)
     }
 }
 

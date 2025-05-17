@@ -31,12 +31,13 @@ struct BookListView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(poet == nil ? "Books" : "Books \(poet!.name)")
+            Text(poet == nil ? "All Books" : "All Books \(poet!.name)")
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundStyle(Color("Color"))
                 .padding(.horizontal)
-                .padding(.top, 20)
+                .padding(.top, 8)
+                .padding(.bottom, -24)
             
             if filteredBooks.isEmpty {
                 Text("Sorry, no books were found")                    .foregroundStyle(.gray)

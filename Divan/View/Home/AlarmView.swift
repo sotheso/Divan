@@ -137,7 +137,7 @@ struct AlarmView: View {
 
                 }
                 
-                Section(header: Text("روزهای هفته")) {
+                Section(header: Text("Days of the Week")) {
                     
                     Toggle("Daily Notification", isOn: Binding(
                         get: { settings.dailyNotification },
