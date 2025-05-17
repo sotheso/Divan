@@ -42,14 +42,14 @@ enum PoemCategory: String, CaseIterable, Identifiable {
     var id: String { self.rawValue }
     var displayName: String {
         switch self {
-        case .hafezGhazal: return "غزلیات حافظ"
-        case .hafezGhete: return "قطعات حافظ"
-        case .hafezRobaee: return "رباعیات حافظ"
-        case .saadiGhazal: return "غزلیات سعدی"
-        case .saadiBostan: return "بوستان سعدی"
-        case .molanaRobaee: return "رباعیات مولانا"
-        case .babaTaherDoBeyti: return "دوبیتی‌های باباطاهر"
-        case .masnavi: return "مثنوی معنوی"
+        case .hafezGhazal: return "Hafez (غزلیات)"
+        case .hafezGhete: return "Hafez (قطعات)"
+        case .hafezRobaee: return "Hafez (رباعیات)"
+        case .saadiGhazal: return "Saadi (غزلیات)"
+        case .saadiBostan: return "Saadi (بوستان)"
+        case .molanaRobaee: return "Molana (رباعیات)"
+        case .babaTaherDoBeyti: return "BabaTaher (دوبیتی)"
+        case .masnavi: return "Molana (مثنوی)"
         }
     }
     

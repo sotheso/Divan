@@ -122,7 +122,7 @@ struct FalView: View {
                     hasTakenFal = false
                 }
             }) {
-                Label("فال جدید", systemImage: "arrow.counterclockwise")
+                Label("Back", systemImage: "arrow.counterclockwise")
             }
             .buttonStyle(.bordered)
             .tint(Color("Color"))
