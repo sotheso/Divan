@@ -16,8 +16,7 @@ struct FavoritePoetsView: View {
                         .font(.system(size: 48))
                         .foregroundStyle(.secondary)
                     
-                    Text("هنوز شاعری به علاقه‌مندی‌ها اضافه نشده است")
-                        .font(.headline)
+                    Text("No poets have been added to your favorites yet.")                        .font(.headline)
                         .foregroundStyle(.secondary)
                     
                     Text("برای افزودن شاعران مورد علاقه، از صفحه پروفایل شاعر استفاده کنید")
@@ -54,7 +53,7 @@ struct FavoritePoetsView: View {
                 }
             }
         }
-        .navigationTitle("شاعران مورد علاقه")
+        .navigationTitle("Favorite Poets")
     }
 }
 

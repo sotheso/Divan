@@ -64,7 +64,7 @@ struct MyFavoritePoemsView: View {
                             }
                         }
                         
-                        FilterChip(title: "همه", isSelected: selectedPoet == nil) {
+                        FilterChip(title: "All", isSelected: selectedPoet == nil) {
                             selectedPoet = nil
                         }
                     }
@@ -82,7 +82,7 @@ struct MyFavoritePoemsView: View {
                 favoritesList
             }
         }
-        .navigationTitle("شعرهای ذخیره شده")
+        .navigationTitle("Saved Poems")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             favoriteManager.loadFavorites()
@@ -132,7 +132,7 @@ struct MyFavoritePoemsView: View {
                             favoriteManager.removeFavorite(id: poem.id)
                         }
                     } label: {
-                        Label("حذف", systemImage: "trash.fill")
+                        Label("Remove", systemImage: "trash.fill")
                     }
                     .tint(.red)
                 }
@@ -148,8 +148,7 @@ struct MyFavoritePoemsView: View {
                 .font(.system(size: 48))
                 .foregroundStyle(.secondary)
             
-            Text("هنوز غزلی ذخیره نکرده‌اید")
-                .font(.headline)
+            Text("You haven't saved any ghazals yet.")                .font(.headline)
                 .foregroundStyle(.secondary)
             
             Text("برای ذخیره غزل‌های مورد علاقه‌تان، از صفحه نمایش غزل استفاده کنید")

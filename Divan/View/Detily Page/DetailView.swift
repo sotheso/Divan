@@ -67,7 +67,7 @@ struct DetailView: View {
                     HStack(spacing: 16) {
                         ShareLink(item: "\(poem.title)\n\n\(poem.content)\n\nوزن: \(poem.vazn ?? "")") {
                             Label {
-                                Text("اشتراک‌گذاری")
+                                Text("Share")
                                     .font(.callout)
                             } icon: {
                                 Image(systemName: "square.and.arrow.up")
@@ -82,7 +82,7 @@ struct DetailView: View {
                                 savePoem()
                             }) {
                                 Label {
-                                    Text(isFavorite ? "ذخیره شده" : "ذخیره کردن")
+                                    Text(isFavorite ? "Saved successfully" : "Save now")
                                         .font(.callout)
                                 } icon: {
                                     Image(systemName: isFavorite ? "bookmark.fill" : "bookmark")
@@ -97,7 +97,7 @@ struct DetailView: View {
                     HStack {
                         Image(systemName: "play.circle")
                             .foregroundStyle(Color("Color"))
-                        Text("خوانش غزل")
+                        Text("Ghazal Reading")
                             .font(.caption)
                             .foregroundStyle(Color("Color"))
                     }
@@ -111,8 +111,7 @@ struct DetailView: View {
                             }
                         }) {
                             Label {
-                                Text("گوش دادن در کست باکس")
-                                    .font(.callout)
+                                Text("Listen on Castbox")                                    .font(.callout)
                             } icon: {
                                 Image("castbox")
                                     .resizable()
@@ -134,7 +133,7 @@ struct DetailView: View {
                             }
                         }) {
                             Label {
-                                Text("گوش دادن در اپل پاکست")
+                                Text("Listen on Apple Podcast")
                                     .font(.callout)
                             } icon: {
                                 Image("Podcasts")
@@ -165,7 +164,7 @@ struct DetailView: View {
                 Button(action: { dismiss() }) {
                     HStack(spacing: 4) {
                         Image(systemName: "chevron.backward")
-                        Text("برگشت")
+                        Text("Back")
                     }
                     .foregroundStyle(Color("Color"))
                 }
@@ -188,7 +187,7 @@ struct DetailView: View {
                     VStack {
                         Spacer()
                         
-                        Text(isFavorite ? "به لیست علاقه‌مندی‌ها اضافه شد" : "از لیست علاقه‌مندی‌ها حذف شد")
+                        Text(isFavorite ? "Added to favorites" : "Removed from favorites")
                             .font(.footnote)
                             .padding()
                             .background(.regularMaterial)

@@ -19,11 +19,11 @@ struct PageTurnAnimation: View {
                 self.audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
                 self.audioPlayer?.prepareToPlay()
             } catch {
-                print("خطا در بارگذاری صدا: \(error.localizedDescription)")
+                print("Error loading audio: \(error.localizedDescription)")
                 self.audioPlayer = nil
             }
         } else {
-            print("فایل صوتی 02.wav یافت نشد. مسیر جستجو: \(Bundle.main.bundlePath)")
+            print("Audio file 02.wav not found. Search path: \(Bundle.main.bundlePath)")
             self.audioPlayer = nil
         }
     }
@@ -45,8 +45,7 @@ struct PageTurnAnimation: View {
                     .rotationEffect(.degrees(rotation))
                     .scaleEffect(scale)
                 
-                Text("در حال گرفتن فال...")
-                    .font(.title2)
+                Text("Loading...")                    .font(.title2)
                     .foregroundColor(.white)
                     .padding(.top)
             }

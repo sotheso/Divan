@@ -17,22 +17,22 @@ struct ContentView: View {
                 TabView {
                     HomeView()
                         .tabItem {
-                            Label("خانه", systemImage: "house.fill")
+                            Label("‌Home", systemImage: "house.fill")
                         }
 
                     SearchView()
                         .tabItem {
-                            Label("جستجو", systemImage: "magnifyingglass")
+                            Label("Search", systemImage: "magnifyingglass")
                         }
 
                     FalView()
                         .tabItem {
-                            Label("فال", systemImage: "sparkles.square.filled.on.square")
+                            Label("Fal", systemImage: "sparkles.square.filled.on.square")
                         }
 
                     SettingView()
                         .tabItem {
-                            Label("تنظیمات", systemImage: "gearshape.fill")
+                            Label("Setting", systemImage: "gearshape.fill")
                         }
                 }
                 .ignoresSafeArea(.container, edges: [.leading, .trailing])

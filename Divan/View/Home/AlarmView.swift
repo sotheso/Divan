@@ -9,8 +9,8 @@ struct AlarmView: View {
     @State private var showTimePicker = false
     @State private var showNotificationPermissionAlert = false
     
-    private let weekDays = ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنج‌شنبه", "جمعه"]
-    private let poets = ["حافظ", "سعدی", "مولانا", "خیام", "فردوسی"]
+    private let weekDays = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+    private let poets = ["حافظ", "سعدی", "مولانا","باباطاهر"]
     
     var selectedTimeText: String {
         let formatter = DateFormatter()
@@ -21,7 +21,7 @@ struct AlarmView: View {
     
     var selectedDaysText: String {
         if settings.selectedDays.isEmpty {
-            return "هیچ روزی انتخاب نشده"
+            return "No day selected"
         } else {
             return settings.selectedDays.sorted().joined(separator: "، ")
         }
@@ -29,7 +29,7 @@ struct AlarmView: View {
     
     var selectedPoetsText: String {
         if settings.selectedPoets.isEmpty {
-            return "هیچ شاعری انتخاب نشده"
+            return "No poet selected"
         } else {
             return settings.selectedPoets.sorted().joined(separator: "، ")
         }
@@ -50,8 +50,8 @@ struct AlarmView: View {
                         for poet in settings.selectedPoets {
                             // ایجاد محتوای اعلان
                             let content = UNMutableNotificationContent()
-                            content.title = "شعر روزانه"
-                            content.body = "شعر جدیدی از \(poet) برای شما آماده است"
+                            content.title = "Poem Reminder"
+                            content.body = "چی میگه \(poet) بزن بیا ببین"
                             content.sound = .default
                             
                             // تنظیم زمان اعلان
@@ -101,7 +101,7 @@ struct AlarmView: View {
                         }
                     )) {
                         Label {
-                            Text("فعال کردن اعلان‌ها")
+                            Text("Turn On Notifications")
                         } icon: {
                             Image(systemName: settings.notificationsEnabled ? "bell.fill" : "bell")
                         }
@@ -109,6 +109,7 @@ struct AlarmView: View {
                 }
                 
                 Section {
+                    
                     DisclosureGroup(
                         isExpanded: $showTimePicker,
                         content: {
@@ -124,7 +125,7 @@ struct AlarmView: View {
                         },
                         label: {
                             HStack {
-                                Text("زمان اعلان روزانه")
+                                Text("Notification Time")
                                 Spacer()
                                 Text(selectedTimeText)
                                     .foregroundStyle(.secondary)
@@ -133,8 +134,12 @@ struct AlarmView: View {
                     )
                     .disabled(!settings.notificationsEnabled)
                     .opacity(settings.notificationsEnabled ? 1.0 : 0.5)
+
+                }
+                
+                Section(header: Text("روزهای هفته")) {
                     
-                    Toggle("اعلان روزانه", isOn: Binding(
+                    Toggle("Daily Notification", isOn: Binding(
                         get: { settings.dailyNotification },
                         set: { newValue in
                             settings.dailyNotification = newValue
@@ -150,9 +155,7 @@ struct AlarmView: View {
                     ))
                     .disabled(!settings.notificationsEnabled)
                     .opacity(settings.notificationsEnabled ? 1.0 : 0.5)
-                }
-                
-                Section(header: Text("روزهای هفته")) {
+                    
                     DisclosureGroup(
                         isExpanded: $showWeekDaysPicker,
                         content: {
@@ -186,7 +189,7 @@ struct AlarmView: View {
                         },
                         label: {
                             HStack {
-                                Text("روزهای انتخاب شده")
+                                Text("Selected Days")
                                 Spacer()
                                 Text(selectedDaysText)
                                     .foregroundStyle(.secondary)
@@ -198,7 +201,7 @@ struct AlarmView: View {
                     .opacity(settings.notificationsEnabled ? 1.0 : 0.5)
                 }
                 
-                Section(header: Text("شاعران مورد علاقه")) {
+                Section(header: Text("Favorite Poets")) {
                     DisclosureGroup(
                         isExpanded: $showPoetsPicker,
                         content: {
@@ -226,7 +229,7 @@ struct AlarmView: View {
                         },
                         label: {
                             HStack {
-                                Text("شاعران انتخاب شده")
+                                Text("Selected Poets")
                                 Spacer()
                                 Text(selectedPoetsText)
                                     .foregroundStyle(.secondary)
@@ -238,7 +241,7 @@ struct AlarmView: View {
                     .opacity(settings.notificationsEnabled ? 1.0 : 0.5)
                 }
             }
-            .navigationTitle("تنظیمات اعلان")
+            .navigationTitle("Notification Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -248,10 +251,10 @@ struct AlarmView: View {
                     }
                 }
             }
-            .alert("دسترسی به اعلان‌ها", isPresented: $showNotificationPermissionAlert) {
-                Button("تایید", role: .cancel) { }
+            .alert("Notification Access", isPresented: $showNotificationPermissionAlert) {
+                Button("OK", role: .cancel) { }
             } message: {
-                Text("برای دریافت اعلان‌ها، لطفاً دسترسی به اعلان‌ها را در تنظیمات دستگاه فعال کنید.")
+                Text("To receive notifications, please enable notification access in your device settings.")
             }
         }
     }

@@ -20,35 +20,35 @@ struct SettingView: View {
                     .ignoresSafeArea()
                 
                 List {
-                    Section(header: Text("ظاهر برنامه")) {
+                    Section(header: Text("App Appearance")) {
                         Toggle(isOn: $appSettings.isDarkMode) {
-                            Label("حالت تاریک", systemImage: "moon.fill")
+                            Label("Dark Mode", systemImage: "moon.fill")
                                 .foregroundStyle(Color("Color"))
                         }
                     }
                     .listRowBackground(Color("Color Back"))
                     
-                    Section(header: Text("شخصی‌سازی")) {
+                    Section(header: Text("Personalization")) {
                         NavigationLink(destination: MyFavoritePoemsView()) {
-                            Label("شعرهای ذخیره شده", systemImage: "bookmark.fill")
+                            Label("Saved Poems", systemImage: "bookmark.fill")
                                 .foregroundStyle(Color("Color"))
                         }
                         
                         NavigationLink(destination: FavoritePoetsView(poets: Poet.samplePoets)) {
-                            Label("شاعران مورد علاقه", systemImage: "heart.fill")
+                            Label("Favorite Poets", systemImage: "heart.fill")
                                 .foregroundStyle(Color("Color"))
                         }
                     }
                     .listRowBackground(Color("Color Back"))
                     
-                    Section(header: Text("ارتباط با ما")) {
+                    Section(header: Text("About us")) {
                         NavigationLink(destination: AboutUsView()) {
-                            Label("درباره ما", systemImage: "info.circle.fill")
+                            Label("About us", systemImage: "info.circle.fill")
                                 .foregroundStyle(Color("Color"))
                         }
                         
                         Link(destination: URL(string: "https://apps.apple.com/app/idXXXXXXXXXX?action=write-review")!) {
-                            Label("امتیاز دادن به ما", systemImage: "star.fill")
+                            Label("Give Us a Rating", systemImage: "star.fill")
                                 .foregroundStyle(Color("Color"))
                         }
                     }
@@ -56,7 +56,7 @@ struct SettingView: View {
                 }
                 .scrollContentBackground(.hidden)
             }
-            .navigationTitle("تنظیمات")
+            .navigationTitle("Setting")
             .tint(Color("Color"))
             .overlay(
                 VStack {
@@ -73,15 +73,15 @@ struct FooterText: View {
     var body: some View {
         VStack(spacing: 4) {
             HStack(spacing: 4) {
+                Text("Developed by ")
+                    .foregroundColor(.gray)
+                    .font(.footnote)
+                
                 Link("Sothesom", destination: URL(string: "https://t.me/sothesom")!)
                     .foregroundColor(Color("Color"))
                     .font(.footnote)
-                
-                Text("ساخته شده توسط ")
-                    .foregroundColor(.gray)
-                    .font(.footnote)
             }
-            Text("نسخه برنامه: 0.0.1")
+            Text("App Version: 0.0.1")
                 .foregroundColor(.gray)
                 .font(.footnote)
         }

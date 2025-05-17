@@ -32,7 +32,7 @@ struct AboutUsView: View {
             }
             .padding()
         }
-        .navigationTitle("درباره ما")
+        .navigationTitle("About Us")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

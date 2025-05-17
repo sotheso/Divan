@@ -31,7 +31,7 @@ struct BookListView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(poet == nil ? "کتاب‌های پیشنهادی" : "کتاب‌های \(poet!.name)")
+            Text(poet == nil ? "Books" : "Books \(poet!.name)")
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundStyle(Color("Color"))
@@ -39,8 +39,7 @@ struct BookListView: View {
                 .padding(.top, 20)
             
             if filteredBooks.isEmpty {
-                Text("هیچ کتابی یافت نشد")
-                    .foregroundStyle(.gray)
+                Text("Sorry, no books were found")                    .foregroundStyle(.gray)
                     .padding()
             } else {
                 ScrollView(.horizontal, showsIndicators: false) {

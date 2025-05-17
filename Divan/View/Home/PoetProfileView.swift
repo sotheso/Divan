@@ -34,7 +34,7 @@ struct PoetProfileView: View {
                             Button(action: { dismiss() }) {
                                 HStack {
                                     Image(systemName: "chevron.backward")
-                                    Text("بازگشت")
+                                    Text("Back")
                                 }
                                 .foregroundStyle(.white)
                                 .padding(8)

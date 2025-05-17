@@ -29,7 +29,7 @@ struct SearchView: View {
                     Image(systemName: "magnifyingglass")
                         .foregroundStyle(Color("Color"))
                     
-                    TextField("جستجو در اشعار...", text: $poemModel.searchText)
+                    TextField("Search in poems...", text: $poemModel.searchText)
                         .textFieldStyle(.plain)
                         .submitLabel(.search)
                     
@@ -72,7 +72,7 @@ struct SearchView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text(selectedCategory?.displayName ?? "جستجو در اشعار")
+                Text(selectedCategory?.displayName ?? "Search in Poems")
                     .font(.headline)
                     .foregroundStyle(Color("Color"))
             }
@@ -83,7 +83,7 @@ struct SearchView: View {
                 }) {
                     HStack(spacing: 4) {
                         Image(systemName: "chevron.left")
-                        Text("بازگشت")
+                        Text("Back")
                     }
                 }
             }
@@ -177,19 +177,14 @@ struct SearchView: View {
     
     private var emptyStateView: some View {
         VStack(spacing: 16) {
-            Image(systemName: "text.magnifyingglass")
+            Image(systemName: "exclamationmark.magnifyingglass")
                 .font(.system(size: 48))
                 .foregroundStyle(Color("Color"))
             
-            Text("جستجو در اشعار " + (selectedCategory?.displayName ?? poemModel.selectedCategory.displayName))
+            Text("Nothing found")
                 .font(.headline)
                 .foregroundStyle(Color("Color"))
             
-            Text("برای یافتن اشعار مورد نظر خود، متنی را در کادر بالا وارد کنید")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color("Color Back"))

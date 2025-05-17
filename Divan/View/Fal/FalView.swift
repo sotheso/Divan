@@ -94,7 +94,7 @@ struct FalView: View {
         VStack(spacing: 16) {
             HStack(spacing: 16) {
                 ShareLink(item: "\(poem.title)\n\n\(poem.content)\n\nوزن: \(poem.vazn ?? "")") {
-                    Label("اشتراک‌گذاری", systemImage: "square.and.arrow.up")
+                    Label("Share", systemImage: "square.and.arrow.up")
                 }
                 .buttonStyle(.bordered)
                 .tint(Color("Color"))
@@ -103,7 +103,7 @@ struct FalView: View {
                     savePoem()
                 }) {
                     Label {
-                        Text(isFavorite ? "ذخیره شده" : "ذخیره کردن")
+                        Text(isFavorite ? "Saved successfully" : "Save now")
                             .font(.callout)
                     } icon: {
                         Image(systemName: isFavorite ? "bookmark.fill" : "bookmark")
@@ -138,7 +138,7 @@ struct FalView: View {
                         showSafari = true
                     }
                 }) {
-                    Label("گوش دادن در Castbox", systemImage: "headphones")
+                    Label("Listen on Castbox", systemImage: "headphones")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.bordered)
@@ -152,7 +152,7 @@ struct FalView: View {
                         showSafari = true
                     }
                 }) {
-                    Label("گوش دادن در Apple Podcast", systemImage: "headphones")
+                    Label("Listen on Apple Podcast", systemImage: "headphones")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.bordered)
@@ -168,8 +168,13 @@ struct FalView: View {
                 .frame(width: 80, height: 80)
                 .foregroundStyle(Color("Color"))
             
-            Text("برای گرفتن فال، نیت کنید و دکمه فال را لمس کنید")
+            Text("Focus your wish and press the Fortune button to receive your fortune.")
                 .font(.headline)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(Color("Color"))
+            
+            Text("برای گرفتن فال، نیت کنید و دکمه فال را لمس کنید")
+                .font(.body)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(Color("Color"))
             
@@ -214,7 +219,7 @@ struct FalView: View {
                 VStack {
                     Spacer()
                     
-                    Text(isFavorite ? "به لیست علاقه‌مندی‌ها اضافه شد" : "از لیست علاقه‌مندی‌ها حذف شد")
+                    Text(isFavorite ? "Added to favorites" : "Removed from favorites")
                         .font(.footnote)
                         .padding()
                         .background(.regularMaterial)
