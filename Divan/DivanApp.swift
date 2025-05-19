@@ -15,12 +15,16 @@ typealias SharedFavoriteManager = FavoriteManager
 struct DivanApp: App {
     // Create a shared instance of FavoriteManager
     @StateObject private var favoriteManager = FavoriteManager.shared
-  
+    @State private var isLoggedIn: Bool = false
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(favoriteManager)
-
+            if !isLoggedIn {
+                IntroView1(isLoggedIn: $isLoggedIn)
+            } else {
+                ContentView()                .environmentObject(favoriteManager)
+                
+            }
         }
     }
 }

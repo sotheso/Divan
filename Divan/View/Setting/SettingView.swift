@@ -56,7 +56,6 @@ struct SettingView: View {
                 }
                 .scrollContentBackground(.hidden)
             }
-            .navigationTitle("Setting")
             .tint(Color("Color"))
             .overlay(
                 VStack {
