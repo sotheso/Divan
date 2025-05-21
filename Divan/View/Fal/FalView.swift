@@ -68,7 +68,17 @@ struct FalView: View {
             Spacer()
             Spacer()
             
-            HStack {
+            VStack {
+                Picker(selection: $viewModel.selectedCategory, label: Label("انتخاب نوع شعر", systemImage: "arrow.triangle.2.circlepath").frame(maxWidth: .infinity)) {
+                    ForEach(PoemCategory.allCases) { category in
+                        Text(category.displayName).tag(category)
+                    }
+                }
+                .pickerStyle(MenuPickerStyle())
+                .frame(maxWidth: .infinity)
+                .background(Color("Color Back").opacity(0.8))
+                .cornerRadius(8)
+                
                 Button(action: {
                     isAnimating = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -85,16 +95,8 @@ struct FalView: View {
                 .tint(Color("Color"))
                 .controlSize(.large)
                 
-                Picker(selection: $viewModel.selectedCategory, label: Label("انتخاب نوع شعر", systemImage: "arrow.triangle.2.circlepath").frame(maxWidth: .infinity)) {
-                    ForEach(PoemCategory.allCases) { category in
-                        Text(category.displayName).tag(category)
-                    }
-                }
-                .pickerStyle(MenuPickerStyle())
-                .frame(maxWidth: .infinity)
-                .background(Color("Color Back").opacity(0.8))
-                .cornerRadius(8)
             }
+            .padding()
         }
         .padding(.top, 200)
         .padding(.horizontal, 20)
