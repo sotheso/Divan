@@ -8,6 +8,9 @@ import Foundation
 struct DetailView: View {
     let poem: Poem
     let hidesFavoriteButton: Bool
+    let showBackButton: Bool
+    let onBackButtonPressed: (() -> Void)?
+    
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) var colorScheme
     @State private var showSafari = false
@@ -15,9 +18,16 @@ struct DetailView: View {
     @State private var isFavorite: Bool = false
     @State private var showFavoriteToast = false
     
-    init(poem: Poem, hidesFavoriteButton: Bool = false) {
+    init(
+        poem: Poem, 
+        hidesFavoriteButton: Bool = false,
+        showBackButton: Bool = false,
+        onBackButtonPressed: (() -> Void)? = nil
+    ) {
         self.poem = poem
         self.hidesFavoriteButton = hidesFavoriteButton
+        self.showBackButton = showBackButton
+        self.onBackButtonPressed = onBackButtonPressed
     }
     
     // MARK: - Local methods to manage favorites
@@ -97,7 +107,7 @@ struct DetailView: View {
                     HStack {
                         // خط سمت چپ
                         Rectangle()
-                            .fill(Color("Color").opacity(0.4))
+                            .fill(Color("Color").opacity(0.3))
                             .frame(height: 1)
                         
                         // محتوای وسط
@@ -111,7 +121,7 @@ struct DetailView: View {
                         
                         // خط سمت راست
                         Rectangle()
-                            .fill(Color("Color").opacity(0.4))
+                            .fill(Color("Color").opacity(0.3))
                             .frame(height: 1)
                     }
                     .padding(.vertical, 8)
@@ -140,27 +150,18 @@ struct DetailView: View {
                         .tint(Color(red: 177/255, green: 72/255, blue: 51/255))
                     }
                     
-//                    if !poem.link2.isEmpty {
-//                        Button(action: {
-//                            if let url = URL(string: poem.link2) {
-//                                selectedURL = url
-//                                showSafari = true
-//                            }
-//                        }) {
-//                            Label {
-//                                Text("Listen on Apple Podcast")
-//                                    .font(.callout)
-//                            } icon: {
-//                                Image("Podcasts")
-//                                    .resizable()
-//                                    .scaledToFit()
-//                                    .frame(width: 24, height: 24)
-//                            }
-//                            .frame(maxWidth: .infinity)
-//                        }
-//                        .buttonStyle(.bordered)
-//                        .tint(.purple)
-//                    }
+                    if showBackButton {
+                        Button(action: {
+                            if let action = onBackButtonPressed {
+                                action()
+                            }
+                        }) {
+                            Label("Back", systemImage: "arrow.counterclockwise")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.bordered)
+                        .tint(Color("Color"))
+                    }
                 }
             }
             .padding(24)

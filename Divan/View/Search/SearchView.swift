@@ -104,24 +104,43 @@ struct SearchView: View {
     }
     
     private var poetSwitchButton: some View {
-        Picker(selection: $poemModel.selectedCategory, label:
-            HStack {
-                Image(systemName: "arrow.triangle.2.circlepath")
-                    .imageScale(.medium)
-                Text("انتخاب نوع شعر")
-                    .fontWeight(.medium)
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 44)
-            .foregroundStyle(.white)
-            .background(Color("Color").gradient)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-        ) {
+        Menu {
             ForEach(PoemCategory.allCases) { category in
-                Text(category.displayName).tag(category)
+                Button(action: {
+                    poemModel.selectedCategory = category
+                }) {
+                    Label(category.displayName, systemImage: category == poemModel.selectedCategory ? "checkmark" : "")
+                }
             }
+        } label: {
+            HStack {
+                Image(systemName: "book.fill")
+                    .foregroundStyle(Color("Color"))
+                
+                Text(poemModel.selectedCategory.displayName)
+                    .fontWeight(.medium)
+                    .foregroundStyle(Color("Color"))
+                
+                Spacer()
+                
+                Image(systemName: "chevron.down")
+                    .foregroundStyle(Color("Color"))
+                    .font(.system(size: 14))
+            }
+            .padding(.horizontal, 16)
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(.ultraThinMaterial)
+                    .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color("Color").opacity(0.2), lineWidth: 1)
+                    )
+            )
         }
-        .pickerStyle(MenuPickerStyle())
+        .buttonStyle(.plain)
     }
     
     private var searchResultsList: some View {
