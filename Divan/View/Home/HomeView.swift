@@ -99,6 +99,7 @@ struct PoetCardView: View {
         }
         .frame(width: UIScreen.main.bounds.width / 2 - 30, height: UIScreen.main.bounds.width / 2 - 30)
         .background(Color("Color Back"))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(
             color: Color("AccentColor").opacity(0.3),
             radius: 8,

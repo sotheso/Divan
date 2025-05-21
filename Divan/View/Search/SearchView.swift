@@ -167,7 +167,7 @@ struct SearchView: View {
     }
     
     private func poemCard(_ poem: Poem) -> some View {
-        NavigationLink(destination: DetailView(poem: poem)) {
+        NavigationLink(destination: DetailView(poem: poem, disableTopPadding: true)) {
             VStack(alignment: .center, spacing: 12) {
                 Text(poem.title)
                     .font(.headline)

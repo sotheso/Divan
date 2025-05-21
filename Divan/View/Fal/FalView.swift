@@ -26,7 +26,14 @@ struct FalView: View {
                         DetailView(
                             poem: poem,
                             hidesFavoriteButton: false,
-                            showBackButton: false
+                            showBackButton: true,
+                            onBackButtonPressed: {
+                                withAnimation {
+                                    viewModel.selectedPoem = nil
+                                    hasTakenFal = false
+                                }
+                            },
+                            disableTopPadding: false
                         )
                     } else {
                         emptyStateView
