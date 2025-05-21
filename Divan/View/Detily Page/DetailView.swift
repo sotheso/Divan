@@ -82,7 +82,7 @@ struct DetailView: View {
                                 savePoem()
                             }) {
                                 Label {
-                                    Text(isFavorite ? "Saved successfully" : "Save now")
+                                    Text(isFavorite ? "Saved" : "Save")
                                         .font(.callout)
                                 } icon: {
                                     Image(systemName: isFavorite ? "bookmark.fill" : "bookmark")
@@ -95,12 +95,26 @@ struct DetailView: View {
                     }
                     
                     HStack {
-                        Image(systemName: "play.circle")
-                            .foregroundStyle(Color("Color"))
-                        Text("Ghazal Reading")
-                            .font(.caption)
-                            .foregroundStyle(Color("Color"))
+                        // خط سمت چپ
+                        Rectangle()
+                            .fill(Color("Color").opacity(0.4))
+                            .frame(height: 1)
+                        
+                        // محتوای وسط
+                        HStack(spacing: 4) {
+                            Image(systemName: "info.circle")
+                                .foregroundStyle(Color("Color"))
+                            Text("Poetry details")
+                                .font(.caption)
+                                .foregroundStyle(Color("Color"))
+                        }
+                        
+                        // خط سمت راست
+                        Rectangle()
+                            .fill(Color("Color").opacity(0.4))
+                            .frame(height: 1)
                     }
+                    .padding(.vertical, 8)
                     
                     // دکمه‌های پادکست
                     if !poem.link1.isEmpty {
@@ -111,9 +125,10 @@ struct DetailView: View {
                             }
                         }) {
                             Label {
-                                Text("Listen on Castbox")                                    .font(.callout)
+                                Text("Ganjor")
+                                    .font(.callout)
                             } icon: {
-                                Image("castbox")
+                                Image("gan")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 24, height: 24)
@@ -122,30 +137,30 @@ struct DetailView: View {
                             .frame(maxWidth: .infinity)
                         }
                         .buttonStyle(.bordered)
-                        .tint(.orange)
+                        .tint(Color(red: 177/255, green: 72/255, blue: 51/255))
                     }
                     
-                    if !poem.link2.isEmpty {
-                        Button(action: {
-                            if let url = URL(string: poem.link2) {
-                                selectedURL = url
-                                showSafari = true
-                            }
-                        }) {
-                            Label {
-                                Text("Listen on Apple Podcast")
-                                    .font(.callout)
-                            } icon: {
-                                Image("Podcasts")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 24, height: 24)
-                            }
-                            .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(.bordered)
-                        .tint(.purple)
-                    }
+//                    if !poem.link2.isEmpty {
+//                        Button(action: {
+//                            if let url = URL(string: poem.link2) {
+//                                selectedURL = url
+//                                showSafari = true
+//                            }
+//                        }) {
+//                            Label {
+//                                Text("Listen on Apple Podcast")
+//                                    .font(.callout)
+//                            } icon: {
+//                                Image("Podcasts")
+//                                    .resizable()
+//                                    .scaledToFit()
+//                                    .frame(width: 24, height: 24)
+//                            }
+//                            .frame(maxWidth: .infinity)
+//                        }
+//                        .buttonStyle(.bordered)
+//                        .tint(.purple)
+//                    }
                 }
             }
             .padding(24)

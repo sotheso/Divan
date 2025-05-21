@@ -97,13 +97,13 @@ struct FalView: View {
                     Label("Share", systemImage: "square.and.arrow.up")
                 }
                 .buttonStyle(.bordered)
-                .tint(Color("Color"))
+                .tint(.blue)
                 
                 Button(action: {
                     savePoem()
                 }) {
                     Label {
-                        Text(isFavorite ? "Saved successfully" : "Save now")
+                        Text(isFavorite ? "Saved" : "Save")
                             .font(.callout)
                     } icon: {
                         Image(systemName: isFavorite ? "bookmark.fill" : "bookmark")
@@ -130,33 +130,49 @@ struct FalView: View {
     }
     
     private func podcastButtonsView(_ poem: Poem) -> some View {
-        VStack(spacing: 16) {
+        VStack {
             if !poem.link1.isEmpty {
+                HStack {
+                    // خط سمت چپ
+                    Rectangle()
+                        .fill(Color("Color").opacity(0.4))
+                        .frame(height: 1)
+                    
+                    // محتوای وسط
+                    HStack(spacing: 4) {
+                        Image(systemName: "info.circle")
+                            .foregroundStyle(Color("Color"))
+                        Text("Poetry details")
+                            .font(.caption)
+                            .foregroundStyle(Color("Color"))
+                    }
+                    
+                    // خط سمت راست
+                    Rectangle()
+                        .fill(Color("Color").opacity(0.4))
+                        .frame(height: 1)
+                }
+                .padding(.vertical, 8)
                 Button(action: {
                     if let url = URL(string: poem.link1) {
                         selectedURL = url
                         showSafari = true
                     }
                 }) {
-                    Label("Listen on Castbox", systemImage: "headphones")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.bordered)
-                .tint(Color("Color"))
-            }
-            
-            if !poem.link2.isEmpty {
-                Button(action: {
-                    if let url = URL(string: poem.link2) {
-                        selectedURL = url
-                        showSafari = true
+                    Label {
+                        Text("Ganjor")
+                            .font(.callout)
+                    } icon: {
+                        Image("gan")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
                     }
-                }) {
-                    Label("Listen on Apple Podcast", systemImage: "headphones")
-                        .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.bordered)
-                .tint(Color("Color"))
+                .tint(Color(red: 177/255, green: 72/255, blue: 51/255))
             }
         }
     }
