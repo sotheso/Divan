@@ -21,25 +21,17 @@ struct FalView: View {
                 Color("Color Back")
                     .ignoresSafeArea()
                 
-                ScrollView {
-                    VStack(spacing: 24) {
-                        if let poem = viewModel.selectedPoem {
-                            DetailView(
-                                poem: poem,
-                                hidesFavoriteButton: false,
-                                showBackButton: true,
-                                onBackButtonPressed: {
-                                    withAnimation {
-                                        viewModel.selectedPoem = nil
-                                        hasTakenFal = false
-                                    }
-                                }
-                            )
-                        } else {
-                            emptyStateView
-                        }
+                ScrollView(showsIndicators: false) {
+                    if let poem = viewModel.selectedPoem {
+                        DetailView(
+                            poem: poem,
+                            hidesFavoriteButton: false,
+                            showBackButton: false
+                        )
+                    } else {
+                        emptyStateView
+                            .padding(.vertical)
                     }
-                    .padding(.vertical)
                 }
                 
                 PageTurnAnimation(isAnimating: $isAnimating)

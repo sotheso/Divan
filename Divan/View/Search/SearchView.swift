@@ -189,6 +189,7 @@ struct SearchView: View {
                 RoundedRectangle(cornerRadius: 16)
                     .fill(colorScheme == .dark ? .white : Color("Color"))
             )
+            .shadow(color: Color("Color").opacity(0.2), radius: 8, x: 0, y: 4)
             .clipShape(RoundedRectangle(cornerRadius: 16))
         }
         .buttonStyle(.plain)
