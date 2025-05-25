@@ -22,7 +22,8 @@ struct DivanApp: App {
             if !isLoggedIn {
                 IntroView1(isLoggedIn: $isLoggedIn)
             } else {
-                ContentView()                .environmentObject(favoriteManager)
+                ContentView()
+                    .environmentObject(favoriteManager)
                 
             }
         }
