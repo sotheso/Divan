@@ -119,11 +119,11 @@ struct IntroView1: View {
             
             Button("رد کردن") {
                 withAnimation(.spring(duration: 0.5)) {
-                    activePage = .page4
+                    activePage = .page5
                 }
             }
             .fontWeight(.semibold)
-            .opacity(activePage != .page4 ? 1 : 0)
+            .opacity(activePage != .page5 ? 1 : 0)
         }
         .foregroundStyle(.white)
         .animation(.spring(duration: 0.5), value: activePage)
@@ -133,13 +133,13 @@ struct IntroView1: View {
     @ViewBuilder
     func ContinueButton() -> some View {
         Button {
-            if activePage == .page4 {
+            if activePage == .page5 {
                 isLoggedIn = true
             } else {
                 activePage = activePage.nextPage
             }
         } label: {
-            Text(activePage == .page4 ? "شروع کنید" : "ادامه")
+            Text(activePage == .page5 ? "شروع کنید" : "ادامه")
                 .contentTransition(.identity)
                 .foregroundStyle(.black)
                 .frame(maxWidth: .infinity)
