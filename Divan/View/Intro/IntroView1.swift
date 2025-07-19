@@ -41,8 +41,8 @@ struct IntroView1: View {
                     .fill(
                         LinearGradient(
                             colors: [
-                                Color(red: 0.1, green: 0.1, blue: 0.2),
-                                Color(red: 0.2, green: 0.3, blue: 0.5)
+                                Color(red: 0x7E/255, green: 0x5B/255, blue: 0x26/255),
+                                Color(red: 0x1B/255, green: 0x13/255, blue: 0x08/255)
                             ],
                             startPoint: .top,
                             endPoint: .bottom
