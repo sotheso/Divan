@@ -60,7 +60,8 @@ struct LoginView: View {
                 // sing up
                 
                 NavigationLink{
-                    
+                    RegistrationView()
+                        .navigationBarBackButtonHidden()
                 } label: {
                     HStack(spacing: 3){
                         Text("ثبت نام کنید")
