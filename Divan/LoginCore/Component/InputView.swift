@@ -25,8 +25,8 @@ struct InputView: View {
                 SecureField(placeholder, text: $text)
                     .font(.system(size: 14))
             } else {
-                SecureField(placeholder, text: $text)
-                    .font(.system(size: 14)) 
+                TextField(placeholder, text: $text)
+                    .font(.system(size: 14))
             }
             
             Divider()

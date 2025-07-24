@@ -12,6 +12,8 @@ struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
     
+    @EnvironmentObject var viewModel: AutreViewModel
+    
     var body: some View {
         NavigationStack{
             VStack{
@@ -21,7 +23,7 @@ struct LoginView: View {
                     .scaledToFit()
                     .frame(width: 100, height: 100)
                     .padding(.vertical, 32)
-                    
+
                 
                 
                 
@@ -36,7 +38,10 @@ struct LoginView: View {
                 .padding(.top, 12)
                 
                 Button {
-                    print("log user in ...")
+//                    print("log user in ...")
+                    Task {
+                        try await viewModel.signIn(withEmail: email, password: password)
+                    }
                     
                 } label: {
                     HStack {

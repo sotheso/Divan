@@ -10,42 +10,14 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var settings = AppSettings()
+    @State private var isLoggedIn = false
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                TabView {
-                    HomeView()
-                        .tabItem {
-                            Label("‌Home", systemImage: "house.fill")
-                        }
-
-                    SearchView()
-                        .tabItem {
-                            Label("Search", systemImage: "magnifyingglass")
-                        }
-
-                    FalView()
-                        .tabItem {
-                            Label("Fal", systemImage: "sparkles.square.filled.on.square")
-                        }
-
-                    SettingView()
-                        .tabItem {
-                            Label("Setting", systemImage: "gearshape.fill")
-                        }
-                }
-                .ignoresSafeArea(.container, edges: [.leading, .trailing])
-                .background(
-                    Color.clear
-                        .background(.ultraThinMaterial)
-                        .edgesIgnoringSafeArea(.bottom)
-                )
-            }
+        if isLoggedIn {
+            LoginView()
+        } else {
+            IntroView0(isLoggedIn: $isLoggedIn)
         }
-        .environmentObject(settings)
-        .preferredColorScheme(settings.isDarkMode ? .dark : .light)
-        .tint(Color("Color"))
     }
 }
 

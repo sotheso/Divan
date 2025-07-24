@@ -11,6 +11,7 @@ import Foundation
 
 struct SettingView: View {
     @EnvironmentObject var appSettings: AppSettings
+    @EnvironmentObject var viewModel: AutreViewModel
     
     var body: some View {
         NavigationStack {
@@ -20,27 +21,32 @@ struct SettingView: View {
                     .ignoresSafeArea()
                 
                 List {
-                    Section{
-                        HStack{
-                            Text(User.MOCK_USER.initials)
-                                .font(.title)
-                                .fontWeight(.semibold)
-                                .foregroundColor(Color("Color Back"))
-                                .frame(width: 72, height: 72)
-                                .background(Color("Color").opacity(0.8))
-                                .clipShape(Circle())
-                            
-                            VStack(alignment: .leading, spacing: 4){
-                                Text(User.MOCK_USER.fullname)
+                    if let user = viewModel.currentUser {
+                        Section{
+                            HStack{
+                                Text(user.initials)
+                                    .font(.title)
                                     .fontWeight(.semibold)
-                                    .padding(.top, 4)
+                                    .foregroundColor(Color("Color Back"))
+                                    .frame(width: 72, height: 72)
+                                    .background(Color("Color").opacity(0.8))
+                                    .clipShape(Circle())
                                 
-                                Text(User.MOCK_USER.email)
-                                    .font(.footnote)
-                                
+                                VStack(alignment: .leading, spacing: 4){
+                                    Text(user.fullname)
+                                        .fontWeight(.semibold)
+                                        .padding(.top, 4)
+                                    
+                                    Text(user.email)
+                                        .font(.footnote)
+                                    
+                                }
+                                .foregroundColor(Color("Color").opacity(0.7))
                             }
-                            .foregroundColor(Color("Color").opacity(0.7))
                         }
+                    }
+                    else {
+                        Text("وارد حساب کاربری بشید")
                     }
                     
                     
@@ -80,11 +86,11 @@ struct SettingView: View {
                                 .foregroundStyle(Color("Color"))
                         }
                         
-//                        Button{
-//                            Link(destination: URL(string: "https://apps.apple.com/app/idXXXXXXXXXX?action=write-review")!)
-//                        } label: {
-//                            SettingsRowView(imagName: "star.fill", title: "امتیاز دادن به اپ", tintColor: Color("Color"))
-//                        }
+                        //                        Button{
+                        //                            Link(destination: URL(string: "https://apps.apple.com/app/idXXXXXXXXXX?action=write-review")!)
+                        //                        } label: {
+                        //                            SettingsRowView(imagName: "star.fill", title: "امتیاز دادن به اپ", tintColor: Color("Color"))
+                        //                        }
                     }
                     .listRowBackground(Color("Color Back"))
                     
@@ -96,7 +102,7 @@ struct SettingView: View {
                         }
                     }
                     .listRowBackground(Color("Color Back"))
-
+                    
                 }
                 
                 .scrollContentBackground(.hidden)
@@ -105,15 +111,16 @@ struct SettingView: View {
             .overlay(
                 VStack {
                     Spacer()
-
+                    
                     
                     FooterText()
                 }
-                .padding(.bottom, 20)
+                    .padding(.bottom, 20)
             )
         }
     }
 }
+
 
 struct FooterText: View {
     var body: some View {
@@ -138,4 +145,5 @@ struct FooterText: View {
 #Preview {
     SettingView()
         .environmentObject(AppSettings())
+        .environmentObject(AutreViewModel())
 }

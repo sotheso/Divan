@@ -15,6 +15,8 @@ struct RegistrationView: View {
     @State private var confirmpassword = ""
     @Environment(\.dismiss) var dismiss
     
+    @EnvironmentObject var viewModel: AutreViewModel
+    
     var body: some View {
         VStack{
             // imag
@@ -31,7 +33,7 @@ struct RegistrationView: View {
                 
                 InputView(text: $fullName , title:  "اسم و فامیل", placeholder: "Mohammad Karimi")
                 
-                InputView(text: $email, title:  "رمز عبور", placeholder: "12345")
+                InputView(text: $password, title:  "رمز عبور", placeholder: "12345")
                     .autocapitalization(.none)
                 
                 
@@ -42,8 +44,10 @@ struct RegistrationView: View {
             
             
             Button {
-                print("log user in ...")
-                
+//                print("log user in ...")
+                Task {
+                    try await viewModel.creatUser(withEmail: email, password: password, fullname: fullName )
+                }
             } label: {
                 HStack {
                     Text("ثبت نام")
