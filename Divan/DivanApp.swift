@@ -7,8 +7,6 @@
 
 import SwiftUI
 import CoreData
-import Firebase
-
 
 // Make FavoriteManager available in the global scope
 typealias SharedFavoriteManager = FavoriteManager
@@ -19,12 +17,6 @@ struct DivanApp: App {
     @StateObject private var favoriteManager = FavoriteManager.shared
     @State private var isLoggedIn: Bool = false
     
-    @StateObject var viewModel = AutreViewModel()
-    
-    init(){
-        FirebaseApp.configure()
-    }
-    
     var body: some Scene {
         WindowGroup {
             if !isLoggedIn {
@@ -32,7 +24,6 @@ struct DivanApp: App {
             } else {
                 ContentView()
                     .environmentObject(favoriteManager)
-                    .environmentObject(viewModel)
                 
             }
         }

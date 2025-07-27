@@ -11,7 +11,6 @@ import Foundation
 
 struct SettingView: View {
     @EnvironmentObject var appSettings: AppSettings
-    @EnvironmentObject var viewModel: AutreViewModel
     
     var body: some View {
         NavigationStack {
@@ -21,90 +20,40 @@ struct SettingView: View {
                     .ignoresSafeArea()
                 
                 List {
-                    if let user = viewModel.currentUser {
-                        Section{
-                            HStack{
-                                Text(user.initials)
-                                    .font(.title)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(Color("Color Back"))
-                                    .frame(width: 72, height: 72)
-                                    .background(Color("Color").opacity(0.8))
-                                    .clipShape(Circle())
-                                
-                                VStack(alignment: .leading, spacing: 4){
-                                    Text(user.fullname)
-                                        .fontWeight(.semibold)
-                                        .padding(.top, 4)
-                                    
-                                    Text(user.email)
-                                        .font(.footnote)
-                                    
-                                }
-                                .foregroundColor(Color("Color").opacity(0.7))
-                            }
-                        }
-                    }
-                    else {
-                        Text("وارد حساب کاربری بشید")
-                    }
-                    
-                    
-                    Section(header: Text("تنظیمات اپ")) {
+                    Section(header: Text("App Appearance")) {
                         Toggle(isOn: $appSettings.isDarkMode) {
-                            Label("حالت شب", systemImage: "moon.fill")
+                            Label("Dark Mode", systemImage: "moon.fill")
                                 .foregroundStyle(Color("Color"))
                         }
                     }
                     .listRowBackground(Color("Color Back"))
                     
-                    Section(header: Text("ذخیره‌ها")) {
-                        
-                        NavigationLink{
-                            MyFavoritePoemsView()
-                        } label: {
-                            SettingsRowView(imagName: "bookmark.fill", title: "شعرهای ذخیره شده", tintColor: Color("Color"))
+                    Section(header: Text("Personalization")) {
+                        NavigationLink(destination: MyFavoritePoemsView()) {
+                            Label("Saved Poems", systemImage: "bookmark.fill")
+                                .foregroundStyle(Color("Color"))
                         }
                         
-                        NavigationLink{
-                            FavoritePoetsView(poets: Poet.samplePoets)
-                        } label: {
-                            SettingsRowView(imagName: "heart.fill", title: "شاعرهای مورد علاقه", tintColor: Color("Color"))
+                        NavigationLink(destination: FavoritePoetsView(poets: Poet.samplePoets)) {
+                            Label("Favorite Poets", systemImage: "heart.fill")
+                                .foregroundStyle(Color("Color"))
                         }
                     }
                     .listRowBackground(Color("Color Back"))
                     
-                    Section("تماس با ما") {
-                        NavigationLink{
-                            AboutUsView()
-                        } label: {
-                            SettingsRowView(imagName: "info.circle.fill", title: "درباره ما", tintColor: Color("Color"))
+                    Section(header: Text("About us")) {
+                        NavigationLink(destination: AboutUsView()) {
+                            Label("About us", systemImage: "info.circle.fill")
+                                .foregroundStyle(Color("Color"))
                         }
                         
                         Link(destination: URL(string: "https://apps.apple.com/app/idXXXXXXXXXX?action=write-review")!) {
-                            Label("امتیاز دادن به اپ", systemImage: "star.fill")
+                            Label("Give Us a Rating", systemImage: "star.fill")
                                 .foregroundStyle(Color("Color"))
                         }
-                        
-                        //                        Button{
-                        //                            Link(destination: URL(string: "https://apps.apple.com/app/idXXXXXXXXXX?action=write-review")!)
-                        //                        } label: {
-                        //                            SettingsRowView(imagName: "star.fill", title: "امتیاز دادن به اپ", tintColor: Color("Color"))
-                        //                        }
                     }
                     .listRowBackground(Color("Color Back"))
-                    
-                    Section("حساب کاربری") {
-                        Button{
-                            print("sign out ...")
-                        } label: {
-                            SettingsRowView(imagName: "multiply.circle.fill", title: "خروج از حساب کاربری", tintColor: .red)
-                        }
-                    }
-                    .listRowBackground(Color("Color Back"))
-                    
                 }
-                
                 .scrollContentBackground(.hidden)
             }
             .tint(Color("Color"))
@@ -112,15 +61,51 @@ struct SettingView: View {
                 VStack {
                     Spacer()
                     
+                    // Apple Podcast Banner
+                    Link(destination: URL(string: "https://podcasts.apple.com/us/podcast/الا-یا-ایها-الساقی-۰۱/id1459918086?i=1000650652264")!) {
+                        HStack {
+                            Image("Ravagh")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 24, height: 24)
+                                .clipShape(RoundedRectangle(cornerRadius: 6))
+                            
+                            Spacer()
+                            
+                            Text("گوش دادن حافظ در صدای سخن عشق")
+                                .foregroundColor(.white)
+                                .font(.headline)
+                            
+                            Spacer()
+                            
+                            Image("Podcasts")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 24, height: 24)
+                                .clipShape(RoundedRectangle(cornerRadius: 6))
+                        }
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 16)
+                        .background(
+                            LinearGradient(
+                                gradient: Gradient(colors: [Color(red: 170/255, green: 197/255, blue: 216/255), Color(red: 183/255, green: 75/255, blue: 222/255)]),
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .cornerRadius(12)
+
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 16)
                     
                     FooterText()
                 }
-                    .padding(.bottom, 20)
+                .padding(.bottom, 20)
             )
         }
     }
 }
-
 
 struct FooterText: View {
     var body: some View {
@@ -145,5 +130,4 @@ struct FooterText: View {
 #Preview {
     SettingView()
         .environmentObject(AppSettings())
-        .environmentObject(AutreViewModel())
 }
