@@ -9,15 +9,15 @@ import SwiftUI
 // Your imports remain the same
 
 struct IntroView0: View {
-    @Binding var isLoggedIn: Bool  // Add this
+    // No external bindings; intro completion handled via @AppStorage in IntroView1
     
     var body: some View {
-        IntroView1(isLoggedIn: $isLoggedIn)  // Pass binding
+        IntroView1()
             .environment(\.colorScheme, .dark)
     }
 }
 
 // Update Preview
 #Preview {
-    IntroView0(isLoggedIn: .constant(false))
+    IntroView0()
 }

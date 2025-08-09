@@ -11,7 +11,7 @@ struct IntroView1: View {
     
     @State private var showingLoginView = false
     @State private var activePage: IntroModel = .page1
-    @Binding var isLoggedIn: Bool
+    @AppStorage("didCompleteIntro") private var didCompleteIntro: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -134,7 +134,7 @@ struct IntroView1: View {
     func ContinueButton() -> some View {
         Button {
             if activePage == .page5 {
-                isLoggedIn = true
+                didCompleteIntro = true
             } else {
                 activePage = activePage.nextPage
             }
@@ -155,5 +155,5 @@ struct IntroView1: View {
 }
 
 #Preview {
-    IntroView1(isLoggedIn: .constant(false))
+    IntroView1()
 }

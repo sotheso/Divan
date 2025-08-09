@@ -29,9 +29,22 @@
 		9B7ACEEA2D8069CA00C77C45 /* DivanTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DivanTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		9BEE96452E4749C600FCE6E5 /* Exceptions for "Divan" folder in "Divan" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 9B0DA7512D804FF900B8A15E /* Divan */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		9B0DA7542D804FF900B8A15E /* Divan */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9BEE96452E4749C600FCE6E5 /* Exceptions for "Divan" folder in "Divan" target */,
+			);
 			path = Divan;
 			sourceTree = "<group>";
 		};
@@ -351,6 +364,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Divan/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Divan/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -379,6 +393,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Divan/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Divan/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

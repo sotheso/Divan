@@ -15,17 +15,28 @@ typealias SharedFavoriteManager = FavoriteManager
 struct DivanApp: App {
     // Create a shared instance of FavoriteManager
     @StateObject private var favoriteManager = FavoriteManager.shared
-    @State private var isLoggedIn: Bool = false
+    @AppStorage("signIn") private var isSignIn: Bool = false
+    @AppStorage("didCompleteIntro") private var didCompleteIntro: Bool = false
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate    
     
     var body: some Scene {
         WindowGroup {
-            if !isLoggedIn {
-                IntroView1(isLoggedIn: $isLoggedIn)
+            if !didCompleteIntro {
+                IntroView1()
+            } else if !isSignIn {
+                LoginScreen()
             } else {
                 ContentView()
                     .environmentObject(favoriteManager)
-                
             }
         }
+    }
+
+    init() {
+        #if DEBUG
+        // Force onboarding on every run in Debug builds
+        UserDefaults.standard.set(false, forKey: "didCompleteIntro")
+        UserDefaults.standard.set(false, forKey: "signIn")
+        #endif
     }
 }
