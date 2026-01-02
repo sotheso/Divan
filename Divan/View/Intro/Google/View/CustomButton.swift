@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct CustomButton: View {
+    var title: String = "Login"
+    var action: () -> Void = {}
     var body: some View {
-        Button(action: {}) {
+        Button(action: action) {
             HStack {
                 Spacer()
-                Text("Login")
+                Text(title)
                     .foregroundColor(.white)
                 Spacer()
             }

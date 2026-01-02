@@ -7,17 +7,19 @@
 
 import SwiftUI
 import CoreData
+import Firebase
 
 // Make FavoriteManager available in the global scope
 typealias SharedFavoriteManager = FavoriteManager
 
 @main
 struct DivanApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     // Create a shared instance of FavoriteManager
     @StateObject private var favoriteManager = FavoriteManager.shared
     @AppStorage("signIn") private var isSignIn: Bool = false
     @AppStorage("didCompleteIntro") private var didCompleteIntro: Bool = false
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate    
+    
     
     var body: some Scene {
         WindowGroup {
